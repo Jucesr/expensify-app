@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest --config=jest.config.json",
+    "test-watch": "jest --config=jest.config.json --watch",
     "server": "live-server public/",
     "build": "webpack",
     "dev-server": "webpack-dev-server"
@@ -18,18 +20,24 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.4",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
+    "enzyme-to-json": "^3.0.1",
     "express": "^4.16.1",
+    "identity-obj-proxy": "^3.0.0",
     "live-server": "^1.2.0",
     "moment": "^2.19.2",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
-    "react": "^16.0.0",
+    "raf": "^3.3.2",
+    "react": "^16.1.1",
     "react-addons-shallow-compare": "^15.6.2",
-    "react-dates": "^12.3.0",
-    "react-dom": "^16.0.0",
+    "react-dates": "^13.0.2",
+    "react-dom": "^16.1.1",
     "react-modal": "^2.2.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
+    "react-test-renderer": "^16.1.1",
     "redux": "^3.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
@@ -39,6 +47,7 @@
     "webpack-dev-server": "^2.5.1"
   },
   "devDependencies": {
-    "babel-plugin-transform-class-properties": "^6.24.1"
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "jest": "^21.2.1"
   }
 }
