@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import {Provider} from 'react-redux';
 import AppRouter from './routers/AppRouter';
-import 'react-dates/initialize';
 
 import configureStore from './store/configureStore';
 import {addExpense, removeExpense, editExpense} from './actions/expenses';
