@@ -1,7 +1,7 @@
 {
   "name": "expensify-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "An app to learn React JS",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
@@ -25,6 +25,7 @@
     "css-loader": "^0.28.4",
     "express": "^4.16.1",
     "extract-text-webpack-plugin": "^3.0.0",
+    "firebase": "^4.6.2",
     "identity-obj-proxy": "^3.0.0",
     "moment": "^2.19.2",
     "node-sass": "^4.5.3",
@@ -35,7 +36,6 @@
     "react-addons-shallow-compare": "^15.6.2",
     "react-dates": "12.3.0",
     "react-dom": "^16.1.1",
-    "react-modal": "^2.2.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
