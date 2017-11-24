@@ -16,16 +16,6 @@ import './styles/styles.scss';
 
 const store = configureStore();
 
-//add 1000 expenses
-
-for (var i = 0; i < 4; i++) {
-  store.dispatch( addExpense({
-    description: `expense ${i}`,
-    amount: i,
-    createdAt: i
-  }));
-}
-
 const state = store.getState();
 
 const jsx = (

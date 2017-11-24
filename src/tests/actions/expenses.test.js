@@ -1,4 +1,10 @@
+import mockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import {addExpense, editExpense, removeExpense} from '../../actions/expenses';
+import expenses from '../fixtures/expenses';
+import database from '../../firebase/firebase';
+
+const createMockStore = mockStore([thunk]);
 
 test('should setup remove expense action object', () => {
   const action = removeExpense({
@@ -27,37 +33,52 @@ test('should setup edit expense action object', () => {
   });
 });
 
-test('should setup add expense action object with provided values', () => {
-  const data = {
-    description: 'Something',
-    amount: 10050,
-    createdAt: 1000,
-    note: 'this was last month rent'
-  };
+test('should save expense in redux store and database', (done) => {
+  const store = createMockStore({});
+  const expense = expenses[0];
+  delete expense.id;
 
-  const action = addExpense(data);
+  store.dispatch(addExpense(expense)).then( () => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'ADD_EXPENSE',
+      expense: {
+        id: expect.any(String),
+        ...expense
+      }
+    });
 
-  expect(action).toEqual({
-    type: 'ADD_EXPENSE',
-    expense: {
-      ...data,
-      id: expect.any(String)
-    }
+    return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+  }).then( (snapshot) => {
+    expect(snapshot.val()).toEqual(expense);
+    done();
   });
-
 });
 
-test('should setup add expense action object with default values', () => {
-  const action = addExpense();
+test('should save expense with default values in redux store and database', (done) => {
+  const store = createMockStore({});
 
-  expect(action).toEqual({
-    type: 'ADD_EXPENSE',
-    expense: {
-      description: '',
-      note: '',
-      amount: 0,
-      createdAt: 0,
-      id: expect.any(String)
-    }
+  store.dispatch(addExpense()).then( () => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'ADD_EXPENSE',
+      expense: {
+        id: expect.any(String),
+        description: '',
+        note: '',
+        amount: 0,
+        createdAt : 0
+      }
+    });
+
+    return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+  }).then( (snapshot) => {
+    expect(snapshot.val()).toEqual({
+      description : '',
+      note : '',
+      amount : 0,
+      createdAt : 0
+    });
+    done();
   });
 });
