@@ -15,33 +15,6 @@ beforeEach( (done) => {
   database.ref('expenses').set(expenseData).then( () => done());
 });
 
-test('should setup remove expense action object', () => {
-  const action = removeExpense({
-    id: '123abc'
-  });
-
-  expect(action).toEqual({
-    type: 'REMOVE_EXPENSE',
-    id: '123abc'
-  });
-});
-
-test('should setup edit expense action object', () => {
-  const action = editExpense('123abc', {
-    description: 'some expense',
-    amount: 1000
-  });
-
-  expect(action).toEqual({
-    id: '123abc',
-    type: 'EDIT_EXPENSE',
-    updates: {
-      amount: 1000,
-      description: 'some expense'
-    }
-  });
-});
-
 test('should save expense in redux store and database', (done) => {
   const store = createMockStore({});
   const expense = {
@@ -107,4 +80,46 @@ test('should set expenses in redux store from database data', (done) => {
     });
     done();
   });
+});
+
+test('should remove expense from store and database', (done) => {
+  const store = createMockStore();
+  const id = 2;
+
+  store.dispatch(removeExpense(id)).then( () => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'REMOVE_EXPENSE',
+      id: id
+    });
+
+    return database.ref(`expenses/${id}`).once('value');
+  }).then( (snapshot) => {
+    expect(snapshot.val()).toBeFalsy();
+    done();
+  });
+});
+
+test('should edit expense in store and database', (done) => {
+  const store = createMockStore();
+  const id = 1;
+  const updates = {
+    description: 'this is from test',
+    amount: 1234567
+  };
+
+  store.dispatch(editExpense(id, updates)).then( () => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'EDIT_EXPENSE',
+      id,
+      updates
+    });
+
+    return database.ref(`expenses/${id}`).once('value');
+  }).then( (snapshot) => {
+    expect(snapshot.val().description).toEqual(updates.description );
+    done();
+  });
+
 });
