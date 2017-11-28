@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import AppRouter from './routers/AppRouter';
 
 import configureStore from './store/configureStore';
-import {addExpense, removeExpense, editExpense} from './actions/expenses';
+import {setExpenses} from './actions/expenses';
 import {setTextFilter, sortByDate, sortByAmount, setStartDate, setEndDate} from './actions/filters';
 import getVisibleExpenses from './selectors/expenses';
 
@@ -24,4 +24,10 @@ const jsx = (
   </Provider>
 );
 
-ReactDom.render(jsx, document.getElementById('app'));
+ReactDom.render(<p> Loading... </p>, document.getElementById('app'));
+
+store.dispatch(setExpenses()).then( () => {
+  ReactDom.render(jsx, document.getElementById('app'));
+}).catch( () => {
+  ReactDom.render(<p> Could not fetch data.</p>, document.getElementById('app'));
+});

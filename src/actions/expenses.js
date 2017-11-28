@@ -2,6 +2,7 @@ import database from '../firebase/firebase'
 
 // ADD_EXPENSE
 
+
 export const addExpense = (expenseData = {}) => {
   return (dispatch) => {
 
@@ -46,3 +47,26 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
+//SET_EXPENSES
+
+export const setExpenses = () => {
+  return (dispatch) => {
+
+    return database.ref('expenses').once('value').then( (snapshot) => {
+      //Parsing
+      const expenses = [];
+      snapshot.forEach( (childSnapshot) => {
+        expenses.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+
+      dispatch({
+        type: 'SET_EXPENSES',
+        expenses: expenses
+      });
+    });
+  }
+};
