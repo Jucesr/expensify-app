@@ -1,8 +1,9 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
-import undoable, { distinctState } from 'redux-undo'
+import undoable, { distinctState } from 'redux-undo';
+import thunk from 'redux-thunk';
 import expensesReducer from '../reducers/expenses';
 import filtersReducer from '../reducers/filters';
-import thunk from 'redux-thunk';
+import authReducer from '../reducers/auth';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -13,7 +14,8 @@ export default () => {
         limit: 3,
         filter: distinctState()
       }),
-      filters: filtersReducer
+      filters: filtersReducer,
+      auth: authReducer
     }),
     composeEnhancers(applyMiddleware(thunk))
   );
