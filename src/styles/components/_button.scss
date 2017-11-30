@@ -1,0 +1,14 @@
+.button{
+  color: white;
+  background: rgb(63, 163, 213);
+  border: none;
+  display: inline-block;
+  padding: $s-size;
+  font-size: $fl-size;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.button-link{
+  background: none;
+}
