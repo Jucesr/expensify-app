@@ -9,7 +9,6 @@ const ExpenseDashBoardPage = () => (
     <ExpenseSumary/>
     <ExpenseListFilters/>
     <ExpenseList/>
-    <UndoRedo/>
   </div>
 );
 

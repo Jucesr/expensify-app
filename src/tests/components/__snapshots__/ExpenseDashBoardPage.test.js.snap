@@ -5,6 +5,5 @@ exports[`should render ExpenseDashBoardPage 1`] = `
   <Connect(ExpenseSumary) />
   <Connect(ExpenseListFilters) />
   <Connect(ExpenseList) />
-  <Connect(UndoRedo) />
 </div>
 `;

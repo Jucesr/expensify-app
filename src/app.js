@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import {Provider} from 'react-redux';
 import AppRouter, {history} from './routers/AppRouter';
-
 import configureStore from './store/configureStore';
 import {setExpenses} from './actions/expenses';
 import {login, logout} from './actions/auth';
-
 import {firebase} from './firebase/firebase';
+import LoadingPage from './components/LoadingPage';
 
 import 'normalize.css/normalize.css';
 import 'react-dates/lib/css/_datepicker.css';
@@ -29,7 +28,7 @@ const renderApp = () => {
   }
 };
 
-ReactDom.render(<p> Loading... </p>, document.getElementById('app'));
+ReactDom.render(<LoadingPage/>, document.getElementById('app'));
 
 firebase.auth().onAuthStateChanged( (user) => {
   if(user){
