@@ -1,4 +1,10 @@
-import * as firebase from 'firebase';
+// This import loads the firebase namespace along with all its type information.
+import * as firebase from 'firebase/app';
+
+// These imports load individual services into the firebase namespace.
+import 'firebase/auth';
+import 'firebase/database';
+// import * as firebase from 'firebase';
 
 const config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -10,6 +16,8 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
+console.log('This should be comming from databse');
 
 const database = firebase.database();
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
