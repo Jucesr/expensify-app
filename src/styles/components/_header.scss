@@ -16,3 +16,21 @@
   align-items: center;
   padding: $s-size 0;
 }
+
+.header-user{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-user__info{
+  display: flex;
+  flex-direction: column;
+}
+
+.header-user__displayname{
+  color: white;
+  font-weight: bold;
+  padding: 1rem 0 0 1rem;
+}
