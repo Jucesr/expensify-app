@@ -1,6 +1,5 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const analizer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -64,7 +63,6 @@ module.exports = (env) => {
         'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID)
       }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      // new webpack.IgnorePlugin(/^\.\/lib/, /react-dates$/),
       new CompressionPlugin({
         asset: "[path].gz[query]",
         algorithm: "gzip",
