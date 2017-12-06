@@ -17,8 +17,6 @@ const config = {
 
 firebase.initializeApp(config);
 
-console.log('This should be comming from databse');
-
 const database = firebase.database();
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 

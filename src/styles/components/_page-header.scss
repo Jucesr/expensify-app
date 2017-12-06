@@ -11,6 +11,11 @@
     font-weight: bold;
   }
 }
+.page-header__subtitle{
+  @extend .page-header__title;
+  font-style: italic;
+  // padding-left: 2rem;
+}
 
 .page-header__actions{
   margin-top: $m-size;

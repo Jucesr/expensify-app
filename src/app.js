@@ -5,6 +5,7 @@ import AppRouter, {history} from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import {setExpenses} from './actions/expenses';
 import {login, logout} from './actions/auth';
+import {setLanguage} from './actions/lang';
 import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
 
@@ -30,19 +31,25 @@ const renderApp = () => {
 
 ReactDom.render(<LoadingPage/>, document.getElementById('app'));
 
+//Set default language
+const defaultLanguage = navigator.language || navigator.userLanguage || 'en-US';
+
+if(defaultLanguage == 'es'){
+  store.dispatch(setLanguage(defaultLanguage));
+}else{
+  store.dispatch(setLanguage('es'));
+}
+
+
 firebase.auth().onAuthStateChanged( (user) => {
   if(user){
     store.dispatch(login(user));
     store.dispatch(setExpenses()).then( () => {
       renderApp();
-      if(history.location.pathname === '/'){
-        history.push('/dashboard');
-      }
     });
   }
   else {
-    store.dispatch(logout());
     renderApp();
-    history.push('/');
+    store.dispatch(logout());
   }
 });

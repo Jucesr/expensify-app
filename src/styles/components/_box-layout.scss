@@ -14,9 +14,16 @@
   text-align: center;
   width: 25rem;
   padding: $l-size $m-size;
+  display: flex;
+  flex-direction: column;
+
+  > * {
+    margin: 1.5rem 0 0 0;
+  }
 }
 
 .box-layout__title{
   margin: 0 0 $m-size 0;
   line-height: 1;
+  flex-grow: 1;
 }

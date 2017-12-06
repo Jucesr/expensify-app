@@ -27,16 +27,17 @@ export class ExpenseListFilters extends React.Component{
   }
 
   render(){
+    const {dictionary} = this.props;
     return (
       <div className="content-container">
         <div className="input-group">
           <div className="input-group__item">
-            <input placeholder="Search" className="text-input" type="text" value={this.props.filters.text} onChange={this.onTextChange}/>
+            <input placeholder={dictionary.textFilter} className="text-input" type="text" value={this.props.filters.text} onChange={this.onTextChange}/>
           </div>
           <div className="input-group__item">
             <select className="select" value={this.props.filters.sortBy} onChange={ this.onSelectChange }>
-              <option value="date" >Date</option>
-              <option value="amount" >Amount</option>
+              <option value="date" >{dictionary.sortByDate}</option>
+              <option value="amount" >{dictionary.sortByAmount}</option>
             </select>
           </div>
           <div className="input-group__item">
@@ -49,6 +50,8 @@ export class ExpenseListFilters extends React.Component{
               numberOfMonths={1}
               isOutsideRange={() => false}
               showClearDates={true}
+              startDatePlaceholderText={dictionary.startDatePicker}
+              endDatePlaceholderText={dictionary.endDatePicker}
             />
           </div>
         </div>
@@ -68,7 +71,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 const mapStateToProps = (state) => ({
-  filters: state.filters
+  filters: state.filters,
+  dictionary: state.lang.dictionary
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseListFilters);

@@ -17,19 +17,23 @@
   padding: $s-size 0;
 }
 
-.header-user{
+.header__language{
+  padding: 0 1.5rem;
+}
+
+.header__user{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.header-user__info{
+.header__user__info{
   display: flex;
   flex-direction: column;
 }
 
-.header-user__displayname{
+.header__user__displayname{
   color: white;
   font-weight: bold;
   padding: 1rem 0 0 1rem;

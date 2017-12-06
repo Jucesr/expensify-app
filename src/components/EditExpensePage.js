@@ -17,19 +17,26 @@ export class EditExpensePage extends React.Component{
   };
 
   render(){
+    const {dictionary} = this.props;
     return(
       <div>
         <div className="page-header">
           <div className="content-container">
-            <h1 className="page-header__title">Edit Expense</h1>
+            <h1 className="page-header__title">{dictionary.pageEditExpense}</h1>
           </div>
         </div>
         <div className="content-container">
           <ExpenseForm
             expense={this.props.expense}
             onSubmit={this.onSubmit}
+            descriptionPlaceholder={dictionary.descriptionPlaceholder}
+            amountPlaceholder={dictionary.amountPlaceholder}
+            notePlaceholder={dictionary.notePlaceholder}
+            saveExpenseButton={dictionary.saveExpenseButton}
+            newExpenseButton={dictionary.newExpenseButton}
+            expenseButton={dictionary.tableExpense}
           />
-          <button className="button button-gray" onClick={this.onClick}>Remove Expense</button>
+          <button className="button button-gray" onClick={this.onClick}>{dictionary.removeExpenseButton}</button>
         </div>
 
       </div>
@@ -38,7 +45,8 @@ export class EditExpensePage extends React.Component{
 }
 
 const mapStateToProps = (state, props) => ({
-  expense: state.expenses.present.find((expense) => expense.id == props.match.params.id)
+  expense: state.expenses.present.find((expense) => expense.id == props.match.params.id),
+  dictionary: state.lang.dictionary
 });
 
 const mapDispatchToProps = (dispatch) => ({

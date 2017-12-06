@@ -9,12 +9,26 @@
   line-height: 1;
 }
 
+.button-left{
+  text-align: left;
+}
+
 .button-link{
   background: none;
   font-size: $fm-size;
   transition: color .3s ease;
   padding-right: 0;
   padding-top: 0;
+  &:hover{
+    color: $blue;
+  }
+}
+
+.button-lang{
+  background: none;
+  font-size: $fm-size;
+  font-weight: bold;
+  transition: color .3s ease;
   &:hover{
     color: $blue;
   }

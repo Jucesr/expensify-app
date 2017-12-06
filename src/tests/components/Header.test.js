@@ -4,7 +4,15 @@ import {Header} from '../../components/Header';
 
 
 test('should render Header', () => {
-  const wrapper = shallow(<Header startLogout = {() => {}}/>);
+  const wrapper = shallow(
+    <Header
+      startLogout = {() => {}}
+      setLanguage = {() => {}}
+      photoURL = "http"
+      displayName = "Julio"
+      tran = {{logoutButton: {es: 'iniciar', en: 'login'}}}
+      locale = "es"
+    />);
   expect(wrapper).toMatchSnapshot();
 });
 

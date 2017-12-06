@@ -19,12 +19,40 @@ exports[`should render Header 1`] = `
           Expensify
         </h1>
       </Link>
-      <button
-        className="button button-link"
-        onClick={[Function]}
+      <div
+        className="header__user"
       >
-        Log out
-      </button>
+        <div
+          className="header__language"
+        >
+          <button
+            className="button button-lang"
+            onClick={[Function]}
+          >
+            ES
+          </button>
+        </div>
+        <div>
+          <img
+            src="http?sz=50"
+          />
+        </div>
+        <span
+          className="header__user__info"
+        >
+          <span
+            className="header__user__displayname"
+          >
+            Julio
+          </span>
+          <button
+            className="button button-link"
+            onClick={[Function]}
+          >
+            iniciar
+          </button>
+        </span>
+      </div>
     </div>
   </div>
 </header>
