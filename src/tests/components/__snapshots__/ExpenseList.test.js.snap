@@ -7,19 +7,10 @@ exports[`should render ExpenseList with NO expenses 1`] = `
   <div
     className="list-header"
   >
-    <div
-      className="show-for-mobile"
-    >
-      Expenses
-    </div>
-    <div
-      className="show-for-desktop"
-    >
+    <div>
       Expense
     </div>
-    <div
-      className="show-for-desktop"
-    >
+    <div>
       Amount
     </div>
   </div>
@@ -44,19 +35,10 @@ exports[`should render ExpenseList with expenses 1`] = `
   <div
     className="list-header"
   >
-    <div
-      className="show-for-mobile"
-    >
-      Expenses
-    </div>
-    <div
-      className="show-for-desktop"
-    >
+    <div>
       Expense
     </div>
-    <div
-      className="show-for-desktop"
-    >
+    <div>
       Amount
     </div>
   </div>

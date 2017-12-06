@@ -9,19 +9,12 @@ exports[`should render ExpenseSumary with 1 expense 1`] = `
   >
     <h1
       className="page-header__title"
-    >
-      Viewing 
-      <span>
-        1
-      </span>
-       
-      expense
-       totalling 
-      <span>
-        $56.40
-      </span>
-      .
-    </h1>
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "Viewing <span>1</span> expense totalling <span>$56.40</span>",
+        }
+      }
+    />
     <div
       className="page-header__actions"
     >
@@ -46,19 +39,12 @@ exports[`should render ExpenseSumary with 2 expenses 1`] = `
   >
     <h1
       className="page-header__title"
-    >
-      Viewing 
-      <span>
-        2
-      </span>
-       
-      expenses
-       totalling 
-      <span>
-        $78.95
-      </span>
-      .
-    </h1>
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "Viewing <span>2</span> expenses totalling <span>$78.95</span>",
+        }
+      }
+    />
     <div
       className="page-header__actions"
     >

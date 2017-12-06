@@ -2,6 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {EditExpensePage} from '../../components/EditExpensePage';
 import expenses from '../fixtures/expenses';
+import en from '../../locale/en';
 
 let editExpense, removeExpense, history, wrapper;
 
@@ -14,6 +15,7 @@ beforeEach( () => {
     removeExpense={removeExpense}
     history={history}
     expense={expenses[1]}
+    dictionary={en}
   />);
 
 });

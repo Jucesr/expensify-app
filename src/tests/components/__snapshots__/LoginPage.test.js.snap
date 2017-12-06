@@ -21,6 +21,22 @@ exports[`should render LoginPage 1`] = `
     >
       Log in
     </button>
+    <select
+      className="select"
+      onChange={[Function]}
+      value="en"
+    >
+      <option
+        value="en"
+      >
+        English
+      </option>
+      <option
+        value="es"
+      >
+        Español
+      </option>
+    </select>
   </div>
 </div>
 `;

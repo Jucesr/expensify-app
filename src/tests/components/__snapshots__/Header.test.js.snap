@@ -29,7 +29,7 @@ exports[`should render Header 1`] = `
             className="button button-lang"
             onClick={[Function]}
           >
-            ES
+            EN
           </button>
         </div>
         <div>
@@ -49,7 +49,7 @@ exports[`should render Header 1`] = `
             className="button button-link"
             onClick={[Function]}
           >
-            iniciar
+            Log out
           </button>
         </span>
       </div>

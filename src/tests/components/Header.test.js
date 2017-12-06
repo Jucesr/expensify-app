@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {Header} from '../../components/Header';
+import en from '../../locale/en';
 
 
 test('should render Header', () => {
@@ -10,15 +11,23 @@ test('should render Header', () => {
       setLanguage = {() => {}}
       photoURL = "http"
       displayName = "Julio"
-      tran = {{logoutButton: {es: 'iniciar', en: 'login'}}}
-      locale = "es"
+      dictionary = {en}
+      locale = "en"
     />);
   expect(wrapper).toMatchSnapshot();
 });
 
 test('should call startLogout', () => {
   const startLogout = jest.fn();
-  const wrapper = shallow(<Header startLogout = {startLogout}/>);
-  wrapper.find('button').simulate('click');
+  const wrapper = shallow(
+    <Header
+      startLogout = {startLogout}
+      setLanguage = {() => {}}
+      photoURL = "http"
+      displayName = "Julio"
+      dictionary = {en}
+      locale = "en"
+    />);
+  wrapper.find('button').at(1).simulate('click');
   expect(startLogout).toHaveBeenCalled();
 });

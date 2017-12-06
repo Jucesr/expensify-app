@@ -3,6 +3,7 @@ import moment from 'moment';
 import {shallow} from 'enzyme';
 import {ExpenseListFilters} from '../../components/ExpenseListFilters';
 import {filters, altfilters} from '../fixtures/filters';
+import en from '../../locale/en';
 
 let setTextFilter, sortByDate, sortByAmount, setStartDate, setEndDate, wrapper;
 
@@ -20,6 +21,7 @@ beforeEach(() => {
       sortByAmount={sortByAmount}
       setStartDate={setStartDate}
       setEndDate={setEndDate}
+      dictionary={en}
     />
   );
 
