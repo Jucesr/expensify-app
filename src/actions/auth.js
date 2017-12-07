@@ -1,12 +1,23 @@
-import {firebase, googleAuthProvider} from '../firebase/firebase';
+import database, {firebase, googleAuthProvider} from '../firebase/firebase';
 
-export const login = ({uid, displayName, photoURL}) => ({
-  type: 'LOGIN',
-  uid,
-  displayName,
-  photoURL
-
-})
+export const login = (user) => {
+  return dispatch => {
+    const {uid, displayName, email, photoURL} = user;
+    return database.ref(`users/${uid}/user_info/`).set({
+      displayName,
+      email
+    }).then( () => {
+      dispatch({
+        type: 'LOGIN',
+        uid,
+        displayName,
+        photoURL
+      })
+    }).catch( (e) => {
+      console.log(e);
+    });
+  }
+};
 
 export const startLogin = () => {
   return () => {

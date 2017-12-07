@@ -43,10 +43,12 @@ if(defaultLanguage == 'es'){
 
 firebase.auth().onAuthStateChanged( (user) => {
   if(user){
-    store.dispatch(login(user));
-    store.dispatch(setExpenses()).then( () => {
+    store.dispatch(login(user)).then( () => {
+      return store.dispatch(setExpenses())
+    }).then( () => {
       renderApp();
     });
+
   }
   else {
     renderApp();
