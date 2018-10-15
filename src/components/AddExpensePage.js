@@ -27,6 +27,7 @@ export class AddExpensePage extends React.Component {
               saveExpenseButton={dictionary.saveExpenseButton}
               newExpenseButton={dictionary.newExpenseButton}
               expenseButton={dictionary.tableExpense}
+              categories={dictionary.categories}
             />
           </div>
       </div>

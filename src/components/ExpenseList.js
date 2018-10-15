@@ -17,7 +17,7 @@ export const ExpenseList = ({expenses, dictionary}) => (
           </div>
         ) : (
           expenses.map( (expense) => {
-            return <ExpenseListItem key={expense.id} {...expense} />
+            return <ExpenseListItem key={expense.id} dictonary={dictionary.categories} {...expense} />
           })
         )
       }

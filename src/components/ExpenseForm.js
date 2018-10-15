@@ -14,6 +14,7 @@ export default class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      category: props.expense ? (props.expense.category ? props.expense.category : 'food' ) : 'food',
       description: props.expense ? props.expense.description : '',
       note: props.expense ? props.expense.note : '',
       amount: props.expense ? (props.expense.amount / 100 ).toString(): '',
@@ -47,6 +48,14 @@ export default class ExpenseForm extends React.Component {
   onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
   };
+
+  onSelectChange = (e) =>{
+
+    const v = e.target.value
+    
+    this.setState(() => ({ category: v }));
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -57,6 +66,7 @@ export default class ExpenseForm extends React.Component {
       //Clear error
       this.setState( () => ({error:''}));
       this.props.onSubmit({
+        category: this.state.category,
         description: this.state.description,
         amount: parseFloat(this.state.amount, 10) * 100,
         createdAt: this.state.createdAt.valueOf(),
@@ -65,9 +75,21 @@ export default class ExpenseForm extends React.Component {
     }
   }
   render() {
+    const {categories} = this.props;
     return (
         <form className="form" onSubmit={this.onSubmit}>
           {this.state.error.length > 0 && <p className="form__error">{this.state.error}</p>  }
+
+          <select className="text-input" value={this.state.category} onChange={ this.onSelectChange }>
+            <option value="food" >{categories.food}</option>
+            <option value="bills" >{categories.bills}</option>
+            <option value="housing" >{categories.housing}</option>
+            <option value="clothing" >{categories.clothing}</option>
+            <option value="health" >{categories.health}</option>
+            <option value="leisure" >{categories.leisure}</option>
+            <option value="transport" >{categories.transport}</option>
+            <option value="other" >{categories.other}</option>
+          </select>
           <input
             className="text-input"
             type="text"
@@ -99,7 +121,7 @@ export default class ExpenseForm extends React.Component {
           >
           </textarea>
           <div>
-            <button class="button">{this.state.editMode ? `${this.props.saveExpenseButton} ` : `${this.props.newExpenseButton} `} {this.props.expenseButton}</button>
+            <button className="button">{this.state.editMode ? `${this.props.saveExpenseButton} ` : `${this.props.newExpenseButton} `} {this.props.expenseButton}</button>
           </div>
         </form>
     )

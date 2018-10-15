@@ -20,6 +20,11 @@
     background: $off-white;
   }
 
+.list-item-category{
+  color: darken($blue, 20%);
+}
+
+
   div > *{
     margin: 0.5rem 0;
   }

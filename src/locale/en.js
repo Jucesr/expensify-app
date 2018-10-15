@@ -15,6 +15,18 @@ export default {
   noExpenseMessage: 'No expenses',
   pageAddExpense: 'Add Expense',
   pageEditExpense: 'Edit Expense',
+  pageReportExpense: 'See details',
+  pageReportTitle: 'Expense details',
+  categories: {
+    food: 'Food',
+    bills: 'Bills',
+    housing: 'Housing',
+    clothing: 'Clothing',
+    health: 'Health and care',
+    leisure: 'Leisure',
+    transport: 'Transport',
+    other: 'Other'
+  },
   descriptionPlaceholder: 'Description',
   amountPlaceholder: 'Amount',
   notePlaceholder: 'Add an extense description (option)',
