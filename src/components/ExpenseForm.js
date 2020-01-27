@@ -14,6 +14,7 @@ export default class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      payment_method: props.expense ? (props.expense.payment_method ? props.expense.payment_method : 'cash' ) : 'cash',
       category: props.expense ? (props.expense.category ? props.expense.category : 'food' ) : 'food',
       description: props.expense ? props.expense.description : '',
       note: props.expense ? props.expense.note : '',
@@ -56,6 +57,13 @@ export default class ExpenseForm extends React.Component {
     this.setState(() => ({ category: v }));
   }
 
+  onPaymentMethodChange = (e) =>{
+
+    const v = e.target.value
+    
+    this.setState(() => ({ payment_method: v }));
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -66,6 +74,7 @@ export default class ExpenseForm extends React.Component {
       //Clear error
       this.setState( () => ({error:''}));
       this.props.onSubmit({
+        payment_method: this.state.payment_method,
         category: this.state.category,
         description: this.state.description,
         amount: parseFloat(this.state.amount, 10) * 100,
@@ -75,10 +84,18 @@ export default class ExpenseForm extends React.Component {
     }
   }
   render() {
-    const {categories} = this.props;
+    const {categories, payment_methods} = this.props;
     return (
         <form className="form" onSubmit={this.onSubmit}>
           {this.state.error.length > 0 && <p className="form__error">{this.state.error}</p>  }
+
+          <select className="text-input" value={this.state.payment_method} onChange={ this.onPaymentMethodChange }>
+            <option value="cash" >{payment_methods.cash}</option>
+            <option value="credit_card" >{payment_methods.credit_card}</option>
+            <option value="debit_card" >{payment_methods.debit_card}</option>
+            <option value="vouchers" >{payment_methods.vouchers}</option>
+            <option value="other" >{payment_methods.other}</option>
+          </select>
 
           <select className="text-input" value={this.state.category} onChange={ this.onSelectChange }>
             <option value="food" >{categories.food}</option>
@@ -90,6 +107,7 @@ export default class ExpenseForm extends React.Component {
             <option value="transport" >{categories.transport}</option>
             <option value="other" >{categories.other}</option>
           </select>
+
           <input
             className="text-input"
             type="text"

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ExpenseListItem from './ExpenseListItem';
 import selectExpenses from '../selectors/expenses'
 
-export const ExpenseList = ({expenses, dictionary}) => (
+export const ExpenseList = ({expenses, dictionary, locale}) => (
   <div className="content-container">
     <div className="list-header">
       <div >{dictionary.tableExpense}</div>
@@ -17,7 +17,7 @@ export const ExpenseList = ({expenses, dictionary}) => (
           </div>
         ) : (
           expenses.map( (expense) => {
-            return <ExpenseListItem key={expense.id} dictonary={dictionary.categories} {...expense} />
+            return <ExpenseListItem key={expense.id} dictonary={dictionary} {...expense} locale={locale} />
           })
         )
       }
@@ -28,7 +28,8 @@ export const ExpenseList = ({expenses, dictionary}) => (
 const mapStateToProps = (state) => {
   return {
     expenses: selectExpenses(state.expenses.present, state.filters),
-    dictionary: state.lang.dictionary
+    dictionary: state.lang.dictionary,
+    locale: state.lang.locale,
   };
 };
 

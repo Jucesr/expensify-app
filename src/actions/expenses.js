@@ -4,6 +4,7 @@ export const addExpense = (expenseData = {}) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     const {
+      payment_method = '',
       category = '',
       description = '',
       note = '',
@@ -12,6 +13,7 @@ export const addExpense = (expenseData = {}) => {
     } = expenseData;
 
     const expense = {
+      payment_method,
       category,
       description,
       note,

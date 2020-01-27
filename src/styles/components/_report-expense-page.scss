@@ -1,0 +1,38 @@
+.report-expense-page{
+
+   .empty_list{
+      height: 200px;
+      background: #f4f4f4;
+      border: 1px solid #e2e2e2;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+
+      span{
+         font-weight: bold;
+         color: #797979;
+      }
+   }
+
+   .section{
+      display: flex;
+      flex-direction: column;
+      .section_title{
+         text-align: center;
+         font-weight:bold;
+         color: rgb(59, 59, 153);
+         padding: 2rem 0;
+      }
+      .section_body{
+         display: flex;
+         div:first-child{
+            flex: .3
+         }
+         div:last-child{
+            flex: .7
+         }
+      }
+   }
+   
+   
+}

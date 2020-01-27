@@ -12,11 +12,8 @@ export default {
   endDatePicker: 'End Date',
   tableExpense: 'Expense',
   tableAmount: 'Amount',
-  noExpenseMessage: 'No expenses',
   pageAddExpense: 'Add Expense',
   pageEditExpense: 'Edit Expense',
-  pageReportExpense: 'See details',
-  pageReportTitle: 'Expense details',
   categories: {
     food: 'Food',
     bills: 'Bills',
@@ -27,6 +24,13 @@ export default {
     transport: 'Transport',
     other: 'Other'
   },
+  payment_methods: {
+    cash: 'Cash',
+    credit_card: 'Credit card',
+    debit_card: 'Debit card',
+    vouchers: 'Vouchers',
+    other: 'Other'
+  },
   descriptionPlaceholder: 'Description',
   amountPlaceholder: 'Amount',
   notePlaceholder: 'Add an extense description (option)',
@@ -34,5 +38,14 @@ export default {
   saveExpenseButton: 'Save',
   newExpenseButton: 'Add',
   footerMessage: 'Core app created by {p1} in its {p2}. New features added by {p3}.',
-  footerMessageCourse: 'course'
+  footerMessageCourse: 'course',
+  pageReportExpense: {
+    title: 'Expense details',
+    button: 'See details',
+    noExpenseMessage: 'No expenses',
+    categoryTitle: 'Expenses by category',
+    paymentMethodTitle: 'Expenses by payment method'
+  },
+  filterByCategoryPlaceholder: 'Filter by categoria',
+  filterByPaymentMethodPlaceholder: 'Filter by payment method',
 }

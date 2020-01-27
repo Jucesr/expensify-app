@@ -12,11 +12,8 @@ export default {
   endDatePicker: 'Hasta',
   tableExpense: 'Gasto',
   tableAmount: 'Costo',
-  noExpenseMessage: 'Lista vacía',
   pageAddExpense: 'Agregar Gasto',
   pageEditExpense: 'Editar Gasto',
-  pageReportExpense: 'Ver detalles',
-  pageReportTitle: 'Detalle de gastos',
   categories: {
     food: 'Alimentación',
     bills: 'Cuentas y pagos',
@@ -27,6 +24,13 @@ export default {
     transport: 'Transporte',
     other: 'Otros'
   },
+  payment_methods: {
+    cash: 'Efectivo',
+    credit_card: 'Tarjeta de crédito',
+    debit_card: 'Tarjeta de débito',
+    vouchers: 'Vales',
+    other: 'Otro'
+  },
   descriptionPlaceholder: 'Descripción',
   amountPlaceholder: 'Costo',
   notePlaceholder: 'Agrege una descripción mas extensa (opcional)',
@@ -34,5 +38,14 @@ export default {
   saveExpenseButton: 'Guardar',
   newExpenseButton: 'Agregar',
   footerMessage: 'Idea original de {p1} en su {p2}. Nuevas características agregadas por {p3}.',
-  footerMessageCourse: 'curso'
+  footerMessageCourse: 'curso',
+  pageReportExpense: {
+    title: 'Detalle de gastos',
+    button: 'Ver detalles',
+    noExpenseMessage: 'No hay registro de gastos.',
+    categoryTitle: 'Gastos por categoria',
+    paymentMethodTitle: 'Gastos por método de pago'
+  },
+  filterByCategoryPlaceholder: 'Filtra por categoria',
+  filterByPaymentMethodPlaceholder: 'Filtra por método de pago',
 }

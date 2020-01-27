@@ -19,7 +19,7 @@ export const Header = ({startLogout, setLanguage,  photoURL, displayName, dictio
             }}>{locale == 'es' ? 'ES' : 'EN'}</button>
           </div>
 
-          <div><img src={`${photoURL}?sz=50`}></img></div>
+          <div style={{maxHeight: '50px'}}><img style={{height: '50px'}} src={`${photoURL}?sz=50`}></img></div>
           <span className="header__user__info">
             <span className="header__user__displayname">{displayName}</span>
             <button className="button button-link" onClick={startLogout}>{dictionary.logoutButton}</button>

@@ -30,3 +30,13 @@ export const setEndDate = (endDate) => ({
   type: 'SET_END_DATE',
   endDate
 });
+
+export const setCategoryFilter = (category) => ({
+  type: 'SET_CATEGORY',
+  category
+});
+
+export const setPaymentMethodFilter = (payment_method) => ({
+  type: 'SET_PAYMENT_METHOD',
+  payment_method
+});
