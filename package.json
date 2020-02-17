@@ -10,7 +10,7 @@
     "test-watch": "cross-env NODE_ENV=test jest --config=jest.config.json --watch",
     "build-dev": "webpack",
     "build": "webpack -p --env production",
-    "dev-server": "webpack-dev-server"
+    "dev": "webpack-dev-server"
   },
   "author": "Julio Ojeda",
   "license": "ISC",
@@ -36,10 +36,10 @@
     "normalize.css": "^7.0.0",
     "numeral": "^2.0.6",
     "raf": "^3.3.2",
-    "react": "^16.1.1",
+    "react": "^16.8.0",
     "react-addons-shallow-compare": "^15.6.2",
     "react-dates": "12.3.0",
-    "react-dom": "^16.1.1",
+    "react-dom": "^16.8.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",

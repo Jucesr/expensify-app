@@ -42,10 +42,17 @@ export default {
   pageReportExpense: {
     title: 'Detalle de gastos',
     button: 'Ver detalles',
+    buttonTimeLine: 'Ver gastos en tiempo',
     noExpenseMessage: 'No hay registro de gastos.',
     categoryTitle: 'Gastos por categoria',
     paymentMethodTitle: 'Gastos por método de pago'
   },
+  pageTimeLineExpense: {
+    title: 'Gastos por mes'
+  },
   filterByCategoryPlaceholder: 'Filtra por categoria',
   filterByPaymentMethodPlaceholder: 'Filtra por método de pago',
+  buttons: {
+    loadMore: 'Cargar más'
+  }
 }

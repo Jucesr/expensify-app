@@ -42,10 +42,17 @@ export default {
   pageReportExpense: {
     title: 'Expense details',
     button: 'See details',
+    buttonTimeLine: 'See Timeline',
     noExpenseMessage: 'No expenses',
     categoryTitle: 'Expenses by category',
     paymentMethodTitle: 'Expenses by payment method'
   },
+  pageTimeLineExpense: {
+    title: 'Expenses by month'
+  },
   filterByCategoryPlaceholder: 'Filter by categoria',
   filterByPaymentMethodPlaceholder: 'Filter by payment method',
+  buttons: {
+    loadMore: 'Load more'
+  }
 }

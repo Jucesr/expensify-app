@@ -1,5 +1,11 @@
 # Release notes.
 
+### V3.1
+Date: February 16th, 2020
+
+* [ADD] time line expenses by month.
+* [FIX] virtualization for list of expenses. 
+
 ### V3.0
 Date: January 26th, 2020
 

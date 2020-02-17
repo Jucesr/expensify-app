@@ -31,7 +31,11 @@ export const ExpenseSumary = ({expensesTotal, expenseCount, hideExpenses, dictio
             }}></h4>
       }
       <div className="page-header__actions">
-      <Link className="button" to="/details">{dictionary.pageReportExpense.button}</Link>
+        <div>
+          <Link className="button" to="/details">{dictionary.pageReportExpense.button}</Link>
+          <Link className="button button-red" to="/timeline">{dictionary.pageReportExpense.buttonTimeLine}</Link>
+        </div>
+        
         <Link className="button button-green" to="/create">{dictionary.addExpenseButton}</Link>
         
       </div>
