@@ -22,6 +22,7 @@ export default {
     health: 'Health and care',
     leisure: 'Leisure',
     transport: 'Transport',
+    travel: 'Travel',
     other: 'Other'
   },
   payment_methods: {

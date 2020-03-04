@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import ExpenseListItem from './ExpenseListItem';
 import selectExpenses from '../selectors/expenses'
 const numberOfExpensesToShow = 10;
 
-export const ExpenseList = ({ expenses, dictionary, locale }) => {
+import { setStartDate, setEndDate } from "../actions/filters";
+
+export const ExpenseList = ({ expenses, dictionary, locale, ...props }) => {
 
   const [offset, setOffset] = useState(numberOfExpensesToShow);
 
   const expensesToShow = expenses.slice(0, offset);
   const shouldRenderLoadMoreButton = expenses.length > offset;
+
+  useEffect(() => {
+    props.setStartDate(moment().startOf('month'))
+    props.setEndDate(moment().endOf('month'))
+ },[])
 
   return (
     <div className="content-container">
@@ -36,6 +44,11 @@ export const ExpenseList = ({ expenses, dictionary, locale }) => {
   )
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  setStartDate: (date) => dispatch(setStartDate(date)),
+  setEndDate: (date) => dispatch(setEndDate(date)),
+});
+
 const mapStateToProps = (state) => {
   return {
     expenses: selectExpenses(state.expenses.present, state.filters),
@@ -44,4 +57,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ExpenseList);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList);

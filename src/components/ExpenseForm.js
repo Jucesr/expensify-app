@@ -105,6 +105,7 @@ export default class ExpenseForm extends React.Component {
             <option value="health" >{categories.health}</option>
             <option value="leisure" >{categories.leisure}</option>
             <option value="transport" >{categories.transport}</option>
+            <option value="travel" >{categories.travel}</option>
             <option value="other" >{categories.other}</option>
           </select>
 

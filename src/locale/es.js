@@ -22,6 +22,7 @@ export default {
     health: 'Salud e Higiene',
     leisure: 'Diversión',
     transport: 'Transporte',
+    travel: 'Viáticos',
     other: 'Otros'
   },
   payment_methods: {

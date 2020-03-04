@@ -1,5 +1,11 @@
 # Release notes.
 
+### V3.2
+Date: March 03th, 2020
+
+* [ADD] New category travel expenses.
+* [FIX] Filter is re-set when ExpenseList is loaded. 
+
 ### V3.1
 Date: February 16th, 2020
 
