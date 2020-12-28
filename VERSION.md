@@ -1,5 +1,13 @@
 # Release notes.
 
+### V4.0
+Date: December 27th, 2020
+
+* [NEW] 
+   *  Add semantic ui
+   *  New google chart 
+   *  User can click in a month and see the expenses by month
+
 ### V3.2
 Date: March 03th, 2020
 
