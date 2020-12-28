@@ -1,21 +1,37 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
+import { Button, Icon, Table, Modal } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
 import ExpenseListFilters from './ExpenseListFilters';
 import selectExpenses from '../selectors/expenses'
-import AnyChart from 'anychart-react/dist/anychart-react.min.js'
+import numeral from 'numeral';
+import GoogleChart from "react-google-charts";
+import times from "lodash/times";
 
 import { setStartDate } from "../actions/filters";
 
 const ExpenseTimeLinePage = (props) => {
    const { expenses, dictionary } = props;
-   const {pageTimeLineExpense} = dictionary;
+   const { pageTimeLineExpense } = dictionary;
+
+   const [selectedExpenses, setSelectedExpenses] = useState([])
+   const [sortAmount, setSortAmount] = useState('none')
+   const [sortDate, setSortDate] = useState('none')
 
    useEffect(() => {
       props.setStartDate(moment().subtract(12, 'months'))
-   },[])
+   }, [])
 
    // Iterate all expenses and group them by month.
+   const expensesByMonth = useMemo(() => expenses.reduce((acum, expense) => {
+      const month = moment(expense.createdAt).startOf('month');
+      const monthString = month.format('MMM YY').toUpperCase()
+      return {
+         ...acum,
+         [monthString]: acum[monthString] ? acum[monthString].concat(expense) : [expense]
+      }
+   }, {}), [expenses])
+
    const dataObj = expenses.reduce((acum, expense) => {
       const month = moment(expense.createdAt).startOf('month');
       let total = 0;
@@ -27,40 +43,155 @@ const ExpenseTimeLinePage = (props) => {
       }
    }, {})
 
-   const data = Object.keys(dataObj).map(key => {
-      return [
-         moment(key).format('MMM YY').toUpperCase(),
-         dataObj[key]
-      ]
-   })
+   const googleData = useMemo(() => {
+      const dates = Object.keys(dataObj).map(key => {
+         return moment(key).format('MM-DD-YYYY')
+      })
 
-   console.log(data)
+      const firstDate = dates[dates.length - 1];
+      const lastDate = dates[0];
+
+      const nMonths = moment(lastDate).diff(firstDate, 'months')
+      const lastNMonths = times(nMonths + 1, (n) => {
+         return moment(lastDate).subtract(n, 'months').format('MM-DD-YYYY');
+      })
+
+      return lastNMonths.map(key => {
+         const value = dataObj[key] ? dataObj[key] : 0
+         return [
+            moment(key).format('MMM YY').toUpperCase(),
+            value
+         ]
+      })
+
+   }, [dataObj])
+
+   const chartEvents = [
+      {
+         eventName: "select",
+         callback({ chartWrapper }) {
+            const selection = chartWrapper.getChart().getSelection()[0];
+            if (selection) {
+               const { row, column } = selection;
+               const selected = googleData[row][column - 1];
+               const expenses = expensesByMonth[selected]
+               console.log(expenses);
+               setSelectedExpenses(expenses)
+            }
+         }
+      }
+   ];
+
+   const toggleSort = (state) => {
+      switch (state) {
+         case 'up':
+            return 'down'
+         case 'down':
+            return 'none'
+         case 'none':
+            return 'up'
+         default:
+            break;
+      }
+   }
+
+   const getIconName = (state) => {
+      switch (state) {
+         case 'up':
+            return 'sort amount up'
+         case 'down':
+            return 'sort amount down'
+         case 'none':
+            return 'list'
+         default:
+            break;
+      }
+   }
 
    return (
       <div>
+         <Modal
+            onClose={() => setSelectedExpenses([])}
+            open={selectedExpenses.length !== 0}
+         >
+            <Modal.Content >
+
+               <Modal.Description>
+                  <Table celled>
+                     <Table.Header>
+                        <Table.Row>
+                           <Table.HeaderCell>
+                              Fecha
+                              <Icon onClick={() => {
+                                 setSortDate(toggleSort(sortDate))
+                              }} name={getIconName(sortDate)}></Icon>
+                           </Table.HeaderCell>
+                           <Table.HeaderCell>Nombre</Table.HeaderCell>
+                           <Table.HeaderCell>Categoria</Table.HeaderCell>
+                           <Table.HeaderCell>Método de pago</Table.HeaderCell>
+                           <Table.HeaderCell>
+                              Monto <Icon onClick={() => {
+                                 setSortAmount(toggleSort(sortAmount))
+                              }} name={getIconName(sortAmount)}></Icon>
+                           </Table.HeaderCell>
+                        </Table.Row>
+                     </Table.Header>
+
+                     <Table.Body>
+                        {selectedExpenses.sort((a, b) => {
+                           if(sortDate !== 'none'){
+                              const isUp = sortDate === 'up';
+                              if (moment(a.createdAt).isAfter(b.createdAt)) {
+                                 return isUp ? -1 : 1
+                              } else {
+                                 return isUp ? 1 : -1
+                              }
+                           }
+                          
+
+                           return sortAmount === 'up' ? a.amount - b.amount : b.amount - a.amount
+                        }).map(expense => <Table.Row>
+                           <Table.Cell>{moment(expense.createdAt).format('MMMM Do , YYYY')}</Table.Cell>
+                           <Table.Cell>{expense.description}</Table.Cell>
+                           <Table.Cell>{dictionary.categories[expense.category]}</Table.Cell>
+                           <Table.Cell>{dictionary.payment_methods[expense.payment_method]}</Table.Cell>
+                           <Table.Cell>{numeral(expense.amount / 100).format('$0,0.00')}</Table.Cell>
+                        </Table.Row>)}
+
+                     </Table.Body>
+                  </Table>
+               </Modal.Description>
+            </Modal.Content>
+
+         </Modal>
          <div className="page-header">
             <div className="content-container">
                <h1 className="page-header__title">{pageTimeLineExpense.title}</h1>
             </div>
          </div>
          <div className="content-container">
-         <ExpenseListFilters />
-            <AnyChart
-               id={`chart-container3`}
-               type="line"
-               data={data.reverse()}
-               legend={false}
-               className="expense-chart"
-               tooltip={{
-                  format: "${%value}{decimalsCount:3,groupsSeparator:\\,}"
-               }}
-               height={500}
-               yAxis={[{
-                  enabled: true,
-                  labels: {
-                     format: '${%value}{decimalsCount:3,groupsSeparator:\\,}',
+            <ExpenseListFilters />
+            <GoogleChart
+               width="100%"
+               height="500px"
+               chartType="LineChart"
+               // loader={<div className="DashboardCardLoader">
+               //    <Dimmer active inverted>
+               //       <Loader>Cargando Gráfica</Loader>
+               //    </Dimmer>
+               // </div>}
+               data={[
+                  ['Fecha', 'Monto'],
+                  ...googleData.reverse()
+               ]}
+               options={{
+                  chartArea: { width: "80%", height: "80%" },
+                  legend: {
+                     position: 'none'
                   }
-               }]}
+               }}
+               chartEvents={chartEvents}
+            // rootProps={{ 'data-testid': '1' }}
             />
          </div>
 
