@@ -44,6 +44,7 @@ export default {
     title: 'Expense details',
     button: 'See details',
     buttonTimeLine: 'See Timeline',
+    buttonCreditCard: 'Credit card expenses',
     noExpenseMessage: 'No expenses',
     categoryTitle: 'Expenses by category',
     paymentMethodTitle: 'Expenses by payment method'

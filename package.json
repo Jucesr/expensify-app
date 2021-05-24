@@ -1,6 +1,6 @@
 {
   "name": "expensify-app",
-  "version": "3.0.0",
+  "version": "4.1.0",
   "description": "A web app built with reactjs that help people control their expenses.",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "history": "^4.7.2",
     "identity-obj-proxy": "^3.0.0",
     "moment": "^2.19.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.1",
     "normalize.css": "^7.0.0",
     "numeral": "^2.0.6",
     "raf": "^3.3.2",

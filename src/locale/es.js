@@ -44,6 +44,7 @@ export default {
     title: 'Detalle de gastos',
     button: 'Ver detalles',
     buttonTimeLine: 'Ver gastos en tiempo',
+    buttonCreditCard: 'Ver gastos de tarjeta',
     noExpenseMessage: 'No hay registro de gastos.',
     categoryTitle: 'Gastos por categoria',
     paymentMethodTitle: 'Gastos por método de pago'

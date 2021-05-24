@@ -1,5 +1,11 @@
 # Release notes.
 
+### V4.1
+Date: May 24th, 2021
+
+* [NEW] 
+   *  Add button to set filters of expenses made by credit card
+
 ### V4.0
 Date: December 27th, 2020
 
