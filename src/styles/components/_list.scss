@@ -7,6 +7,18 @@
   padding: $s-size $m-size;
 }
 
+.list-body-item{
+  width: 100%;
+  color: $grey;
+  display: flex;
+  justify-content: space-between;
+  padding: $s-size $m-size;
+  &:hover{
+    background: $off-white;
+    cursor: pointer;
+  }
+}
+
 .list-item{
   display: flex;
   justify-content: space-between;

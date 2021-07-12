@@ -45,6 +45,7 @@ export default {
     button: 'Ver detalles',
     buttonTimeLine: 'Ver gastos en tiempo',
     buttonCreditCard: 'Ver gastos de tarjeta',
+    buttonCategories: 'Ver categorias',
     noExpenseMessage: 'No hay registro de gastos.',
     categoryTitle: 'Gastos por categoria',
     paymentMethodTitle: 'Gastos por método de pago'
@@ -55,6 +56,20 @@ export default {
   filterByCategoryPlaceholder: 'Filtra por categoria',
   filterByPaymentMethodPlaceholder: 'Filtra por método de pago',
   buttons: {
-    loadMore: 'Cargar más'
+    loadMore: 'Cargar más',
+    saveButton: 'Guardar',
+    removeButton: 'Eliminar',
+  },
+  categoryPage: {
+    addCategoryButton: 'Agregar categoria',
+    tableHeaderCode: 'Código',
+    tableHeaderSpanish: 'Español',
+    tableHeaderEnglish: 'Ingles',
+  },
+  categoryForm: {
+    codePlaceholder: 'Código',
+    spanishPlaceholder: 'Descripción en español',
+    englishPlaceholder: 'Descripción en ingles',
+    errorForm: 'Campos vacios'
   }
 }

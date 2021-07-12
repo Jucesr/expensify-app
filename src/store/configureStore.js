@@ -5,6 +5,7 @@ import expensesReducer from '../reducers/expenses';
 import filtersReducer from '../reducers/filters';
 import authReducer from '../reducers/auth';
 import langReducer from '../reducers/lang';
+import categoryReducer from '../reducers/categories';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -17,7 +18,8 @@ export default () => {
       }),
       filters: filtersReducer,
       auth: authReducer,
-      lang: langReducer
+      lang: langReducer,
+      categories: categoryReducer,
     }),
     composeEnhancers(applyMiddleware(thunk))
   );

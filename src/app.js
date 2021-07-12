@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import AppRouter, {history} from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import {setExpenses} from './actions/expenses';
+import {setCategories} from './actions/categories';
 import {login, logout} from './actions/auth';
 import {setLanguage} from './actions/lang';
 import {firebase} from './firebase/firebase';
@@ -46,6 +47,8 @@ firebase.auth().onAuthStateChanged( (user) => {
   if(user){
     store.dispatch(login(user)).then( () => {
       return store.dispatch(setExpenses())
+    }).then( () => {
+      return store.dispatch(setCategories())
     }).then( () => {
       renderApp();
     });

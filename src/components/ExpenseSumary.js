@@ -65,6 +65,7 @@ export const ExpenseSumary = ({ expensesTotal, expenseCount, hideExpenses, dicti
           >
             {dictionary.pageReportExpense.buttonCreditCard}
           </Button>
+          <Link className="button button-purple" to="/categories">{dictionary.pageReportExpense.buttonCategories}</Link>
         </div>
 
         <Link className="button button-green" to="/create">{dictionary.addExpenseButton}</Link>
