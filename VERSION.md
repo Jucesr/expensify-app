@@ -1,5 +1,11 @@
 # Release notes.
 
+### V4.2
+Date: Jul 12th, 2021
+
+* [NEW] 
+   *  Add new category 'Kids'
+
 ### V4.1
 Date: May 24th, 2021
 

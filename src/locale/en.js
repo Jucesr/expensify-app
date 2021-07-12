@@ -23,6 +23,7 @@ export default {
     leisure: 'Leisure',
     transport: 'Transport',
     travel: 'Travel',
+    kids: 'Childrens',
     other: 'Other'
   },
   payment_methods: {

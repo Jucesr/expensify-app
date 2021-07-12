@@ -1,6 +1,6 @@
 {
   "name": "expensify-app",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "A web app built with reactjs that help people control their expenses.",
   "main": "index.js",
   "scripts": {
