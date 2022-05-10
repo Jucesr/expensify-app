@@ -10,7 +10,7 @@
     "test-watch": "cross-env NODE_ENV=test jest --config=jest.config.json --watch",
     "build-dev": "webpack",
     "build": "webpack -p --env production",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server --env NODE_ENV=test"
   },
   "author": "Julio Ojeda",
   "license": "ISC",
