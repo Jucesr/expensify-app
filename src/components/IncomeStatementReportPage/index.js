@@ -35,16 +35,24 @@ const generateIncomes = (numberOfElements, cats) => {
 
 const groupItemsByCategory = (items, activeMonth, dictonary_categories) => {
    // Filter out incomes that are not in the active month
+   const startRange = moment(activeMonth).startOf('month')
+   const endRange = moment(activeMonth).endOf('month')
    const filteredIncomes = items.filter(income => {
-      const incomeMonth = moment(income.createdAt).format('MMMM');
-      return incomeMonth === activeMonth;
+      const createdAtMoment = moment(income.createdAt);
+      const startDateMatch = startRange.isSameOrBefore(createdAtMoment, 'day');
+      const endDateMatch = endRange.isSameOrAfter(createdAtMoment, 'day');
+      return startDateMatch && endDateMatch;
    });
 
    // Get incomes from previuos month to get % of increase/decrease
-   const previuosMonth = moment().month(activeMonth).subtract(1, 'months').format('MMMM');
+   const previuosMonth = moment(activeMonth).subtract(1, 'months')
+   const _startRange = moment(previuosMonth).startOf('month')
+   const _endRange = moment(previuosMonth).endOf('month')
    const previousIncomes = items.filter(income => {
-      const incomeMonth = moment(income.createdAt).format('MMMM');
-      return incomeMonth === previuosMonth;
+      const createdAtMoment = moment(income.createdAt);
+      const _startDateMatch = _startRange.isSameOrBefore(createdAtMoment, 'day');
+      const _endDateMatch = _endRange.isSameOrAfter(createdAtMoment, 'day');
+      return _startDateMatch && _endDateMatch;
    });
 
    const groupedIncomes = groupItemsByProperty(filteredIncomes, 'category');
@@ -99,7 +107,7 @@ const IncomeStatementReportPage = (props) => {
    // const incomes = _incomes;
    // const expenses = _expenses
 
-   const [activeMonth, setActiveMonth] = useState(moment().format('MMMM'));
+   const [activeMonth, setActiveMonth] = useState(moment());
    const [incomeFilters, setIncomeFilters] = useState(['travel'])
    const [expenseFilters, setExpenseFilters] = useState(['travel'])
 
@@ -146,8 +154,8 @@ const IncomeStatementReportPage = (props) => {
                         <Button
                            key={month.format('MMMM')}
                            color="blue"
-                           basic={activeMonth !== month.format('MMMM')}
-                           onClick={() => setActiveMonth(month.format('MMMM'))}>
+                           basic={activeMonth.format('MMMM') !== month.format('MMMM')}
+                           onClick={() => setActiveMonth(month)}>
                            {moment(month).format('MMMM')}
                         </Button>
                      )

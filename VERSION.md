@@ -1,5 +1,11 @@
 # Release notes.
 
+### V5.1
+Date: May 11th, 2022
+
+* [FIX] 
+   *  Fixed a bug in income statement.
+   
 ### V5.0
 Date: May 11th, 2022
 
