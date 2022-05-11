@@ -1,16 +1,17 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useReducer, useEffect } from 'react'
 import { Button, Icon, Table, Modal } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import numeral from 'numeral';
 import moment from 'moment';
 
-import { groupItemsByProperty, randomInt } from "../../utils/index";
+import { groupItemsByProperty, randomInt, addOrRemove } from "../../utils/index";
 import getExpensesTotal from "../../selectors/expenses-total";
 
 import categories_income from "../../config/categories_income";
 import categories_expense from "../../config/categories";
 import payment_methods from "../../config/payment_methods"
 
+import sortBy from "lodash.sortby";
 
 // function to generate a rendom number of expenses
 const generateIncomes = (numberOfElements, cats) => {
@@ -29,66 +30,85 @@ const generateIncomes = (numberOfElements, cats) => {
    return incomes;
 
 }
+// const _incomes = generateIncomes(3, categories_income);
+// const _expenses = generateIncomes(10000, categories_expense);
 
+const groupItemsByCategory = (items, activeMonth, dictonary_categories) => {
+   // Filter out incomes that are not in the active month
+   const filteredIncomes = items.filter(income => {
+      const incomeMonth = moment(income.createdAt).format('MMMM');
+      return incomeMonth === activeMonth;
+   });
+
+   // Get incomes from previuos month to get % of increase/decrease
+   const previuosMonth = moment().month(activeMonth).subtract(1, 'months').format('MMMM');
+   const previousIncomes = items.filter(income => {
+      const incomeMonth = moment(income.createdAt).format('MMMM');
+      return incomeMonth === previuosMonth;
+   });
+
+   const groupedIncomes = groupItemsByProperty(filteredIncomes, 'category');
+   const groupedPreviousIncomes = groupItemsByProperty(previousIncomes, 'category');
+
+   const rows = Object.keys(dictonary_categories).map(key => {
+      const incomesByCategory = groupedIncomes[key] ? groupedIncomes[key] : [];
+      return {
+         key: key,
+         category: dictonary_categories[key],
+         total: getExpensesTotal(incomesByCategory)
+      }
+   })
+
+   const rowsOfPrevIncomes = Object.keys(groupedPreviousIncomes).map(key => {
+      const incomesByCategory = groupedPreviousIncomes[key];
+      return {
+         category: dictonary_categories[key],
+         total: getExpensesTotal(incomesByCategory)
+      }
+   })
+
+   // Add the percentage of increase/decrease based on the previous month
+   const _rows = rows.map(row => {
+      const prevRow = rowsOfPrevIncomes.find(prevRow => prevRow.category === row.category);
+      if (prevRow) {
+         const increase = (row.total - prevRow.total) / prevRow.total;
+         return {
+            ...row,
+            increase: increase,
+            increase_percentage: numeral(increase).format('0.00%')
+         }
+      }
+      return {
+         ...row,
+         increase: 0,
+         increase_percentage: numeral(0).format('0.00%')
+      };
+   })
+
+   // sort rows by category
+   return _rows.sort((a, b) => {
+      return a.category.localeCompare(b.category);
+   })
+}
 
 const formatNumber = number => numeral(number / 100).format('$0,0.00')
 
-const _incomes = generateIncomes(1000, categories_income);
-const _expenses = generateIncomes(800, categories_expense);
-
 const IncomeStatementReportPage = (props) => {
-   // const { expenses, incomes } = props;
+   const { expenses, incomes } = props;
    const { dictionary } = props;
+   // const incomes = _incomes;
+   // const expenses = _expenses
 
-   const incomes = _incomes;
-   const expenses = _expenses
-
-   const [exchangeRate, setExchangeRate] = useState(20);
    const [activeMonth, setActiveMonth] = useState(moment().format('MMMM'));
+   const [incomeFilters, setIncomeFilters] = useState(['travel'])
+   const [expenseFilters, setExpenseFilters] = useState(['travel'])
 
    const incomesRows = useMemo(() => {
-
-      // Filter out incomes that are not in the active month
-      const filteredIncomes = incomes.filter(income => {
-         const incomeMonth = moment(income.createdAt).format('MMMM');
-         return incomeMonth === activeMonth;
-      });
-
-      const groupedIncomes = groupItemsByProperty(filteredIncomes, 'category');
-      const rows = Object.keys(groupedIncomes).map(key => {
-         const incomesByCategory = groupedIncomes[key];
-         return {
-            category: dictionary.categories_income[key],
-            total: getExpensesTotal(incomesByCategory)
-         }
-      })
-
-      // sort rows by category
-      return rows.sort((a, b) => {
-         return a.category.localeCompare(b.category);
-      })
+      return groupItemsByCategory(incomes, activeMonth, dictionary.categories_income);
    }, [incomes, activeMonth])
 
-
    const expensesRows = useMemo(() => {
-      // Filter out expenses that are not in the active month
-      const filteredIncomes = expenses.filter(income => {
-         const incomeMonth = moment(income.createdAt).format('MMMM');
-         return incomeMonth === activeMonth;
-      });
-
-      const groupedIncomes = groupItemsByProperty(filteredIncomes, 'category');
-      const rows = Object.keys(groupedIncomes).map(key => {
-         const incomesByCategory = groupedIncomes[key];
-         return {
-            category: dictionary.categories[key],
-            total: getExpensesTotal(incomesByCategory)
-         }
-      })
-      // sort rows by category
-      return rows.sort((a, b) => {
-         return a.category.localeCompare(b.category);
-      })
+      return groupItemsByCategory(expenses, activeMonth, dictionary.categories);
    }, [expenses, activeMonth])
 
    const lastSixMonths = Array(6).fill().map((_, i) => {
@@ -96,88 +116,182 @@ const IncomeStatementReportPage = (props) => {
    })
 
    const netIncome = useMemo(() => {
-      const incomes = incomesRows.reduce((acc, curr) => acc + curr.total, 0);
-      const expenses = expensesRows.reduce((acc, curr) => acc + curr.total, 0);
+      const _incomesRows = incomesRows.filter(row => !incomeFilters.includes(row.key))
+      const incomes = _incomesRows.reduce((acc, curr) => acc + curr.total, 0);
+      
+      const _expensesRows = expensesRows.filter(row => !expenseFilters.includes(row.key))
+      const expenses = _expensesRows.reduce((acc, curr) => acc + curr.total, 0);
       return incomes - expenses;
-   }, [incomesRows, expensesRows])
+   }, [incomesRows, expensesRows, incomeFilters, expenseFilters])
 
    return (
-      <div style={{ margin: '0 5rem' }}>
+      <div>
+         <div className="page-header">
+            <div className="content-container" style={{ display: 'flex', alignItems: 'center' }}>
 
-         {/* render an array of buttons that represents the last six months of the year */}
-
-         <div style={{ display: 'flex', marginTop: '1rem' }}>
-            <React.Fragment >
-               {lastSixMonths.reverse().map(month => {
-                  return (
-                     <Button
-                        key={month.format('MMMM')}
-                        color="blue"
-                        basic={activeMonth !== month.format('MMMM')}
-                        onClick={() => setActiveMonth(month.format('MMMM'))}>
-                        {moment(month).format('MMMM')}
-                     </Button>
-                  )
-               })}
-            </React.Fragment>
+               <Button basic circular icon='arrow left' onClick={() => {
+                  props.history.push('/income');
+               }} />
+               <h1 className="page-header__title">{dictionary.incomeStatementPage.title}</h1>
+            </div>
          </div>
+         <div className="content-container" style={{ marginBottom: '1rem' }}>
 
+            {/* render an array of buttons that represents the last six months of the year */}
 
+            <div style={{ display: 'flex' }}>
+               <React.Fragment >
+                  {lastSixMonths.reverse().map(month => {
+                     return (
+                        <Button
+                           key={month.format('MMMM')}
+                           color="blue"
+                           basic={activeMonth !== month.format('MMMM')}
+                           onClick={() => setActiveMonth(month.format('MMMM'))}>
+                           {moment(month).format('MMMM')}
+                        </Button>
+                     )
+                  })}
+               </React.Fragment>
+            </div>
 
-         {/* <div>
-            <label>Exchange Rate</label>
-            <input type="number" value={exchangeRate} onChange={(e) => setExchangeRate(e.target.value)} />
+            <SumTable
+               title={'Ingresos'}
+               titleClass={'IncomeHeaderTitle'}
+               rows={incomesRows}
+               filters={incomeFilters}
+               toggleFilter={(key) => {
+                  setIncomeFilters(
+                     addOrRemove(incomeFilters, key)
+                  )
+               }}
+            />
 
-         </div> */}
-
-         <SumTable
-            title={'Ingresos'}
-            titleClass={'IncomeHeaderTitle'}
-            rows={incomesRows}
-            exchangeRate={exchangeRate}
-         />
-
-         <SumTable
-            title={'Egresos'}
-            titleClass={'ExpenseHeaderTitle'}
-            rows={expensesRows}
-            exchangeRate={exchangeRate}
-            netIncome={netIncome}
-         />
+            <SumTable
+               title={'Egresos'}
+               titleClass={'ExpenseHeaderTitle'}
+               rows={expensesRows}
+               netIncome={netIncome}
+               filters={expenseFilters}
+               toggleFilter={(key) => {
+                  setExpenseFilters(
+                     addOrRemove(expenseFilters, key)
+                  )
+               }}
+            />
+         </div>
       </div>
    )
+}
+
+
+function exampleReducer(state, action) {
+   switch (action.type) {
+      case 'INIT_ROWS': {
+         return {
+            column: null,
+            data: action.payload,
+            direction: null,
+         }
+      }
+      case 'CHANGE_SORT':
+         if (state.column === action.column) {
+            return {
+               ...state,
+               data: state.data.slice().reverse(),
+               direction:
+                  state.direction === 'ascending' ? 'descending' : 'ascending',
+            }
+         }
+
+         return {
+            column: action.column,
+            data: sortBy(state.data, [action.column]),
+            direction: 'ascending',
+         }
+      default:
+         throw new Error()
+   }
 }
 
 const SumTable = ({
    title,
    titleClass,
    rows,
-   exchangeRate,
-   netIncome = null
+   netIncome = null,
+   filters = [],
+   toggleFilter,
 }) => {
-   return <Table celled structured compact >
+
+   const [state, dispatch] = useReducer(exampleReducer, {
+      column: null,
+      data: rows,
+      direction: null,
+   })
+
+   useEffect(() => {
+      dispatch({ type: 'INIT_ROWS', payload: rows })
+   }, [rows])
+
+   const { column, data, direction } = state
+
+   const total = useMemo(() => {
+      // remove rows that don't match the filters
+      const filteredRows = data.filter(row => {
+         return !filters.includes(row.key)
+      })
+
+      return filteredRows.reduce((acc, curr) => acc + curr.total, 0)
+      
+   }, [filters, data])
+
+   return <Table celled structured compact sortable>
       <Table.Header >
          <Table.Row textAlign='center' className={titleClass}>
             <Table.HeaderCell colSpan='3'>{title}</Table.HeaderCell>
          </Table.Row>
          <Table.Row textAlign='center' className="IncomeStatementTableHeaderRow">
-            <Table.HeaderCell rowSpan='2'>Categoria</Table.HeaderCell>
-            <Table.HeaderCell colSpan='2'>Importe</Table.HeaderCell>
-         </Table.Row>
-         <Table.Row textAlign='center' className="IncomeStatementTableHeaderRow">
-            <Table.HeaderCell>MXN</Table.HeaderCell>
-            {/* <Table.HeaderCell>USD</Table.HeaderCell> */}
+            <Table.HeaderCell
+               width={12}
+               sorted={column === 'category' ? direction : null}
+               onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'category' })}
+            >Categoria
+            </Table.HeaderCell>
+            <Table.HeaderCell
+               width={2}
+               sorted={column === 'total' ? direction : null}
+               onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'total' })}
+            >Importe</Table.HeaderCell>
+            <Table.HeaderCell
+               width={2}
+               sorted={column === 'increase' ? direction : null}
+               onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'increase' })}
+            >%I/D</Table.HeaderCell>
          </Table.Row>
       </Table.Header>
 
 
       <Table.Body>
-         {rows.map(row => {
+         {data.map(row => {
+            const is_disabled = filters.includes(row.key);
             return (
-               <Table.Row key={row.category} className="IncomeStatementTableHeaderRow">
-                  <Table.Cell>{row.category}</Table.Cell>
-                  <Table.Cell textAlign='right'>{formatNumber(row.total)}</Table.Cell>
-                  {/* <Table.Cell textAlign='right'>{formatNumber(row.total / exchangeRate)}</Table.Cell> */}
+               <Table.Row
+                  key={row.category}
+                  className={`IncomeStatementTableHeaderRow ${is_disabled ? 'disable' : ''}`}
+               >
+                  <Table.Cell
+                     className={`IncomeStatementTableCellMain`}
+                     onClick={() => {
+                        toggleFilter(row.key);
+                     }}>{row.category}</Table.Cell>
+                  <Table.Cell textAlign='right' >{formatNumber(row.total)}</Table.Cell>
+                  <Table.Cell
+                     textAlign='right'
+                     error={is_disabled ? false : row.increase < 0}
+                     positive={is_disabled ? false : row.increase > 0}
+                  >
+                     {row.increase_percentage}
+                  </Table.Cell>
                </Table.Row>
             )
          })}
@@ -187,15 +301,15 @@ const SumTable = ({
       <Table.Footer>
          <Table.Row>
             <Table.HeaderCell colSpan='1'>Total</Table.HeaderCell>
-            <Table.HeaderCell textAlign='right'>{formatNumber(rows.reduce((acc, curr) => acc + curr.total, 0))}</Table.HeaderCell>
-            {/* <Table.HeaderCell textAlign='right'>{formatNumber(rows.reduce((acc, curr) => acc + curr.total / exchangeRate, 0))}</Table.HeaderCell> */}
+            <Table.HeaderCell textAlign='right'>{formatNumber(total)}</Table.HeaderCell>
+            <Table.HeaderCell textAlign='right'></Table.HeaderCell>
          </Table.Row>
          {/* render a table footer with the net income */}
          {netIncome &&
             <Table.Row className="NetIncomeRow">
                <Table.HeaderCell colSpan='1'>Net Income</Table.HeaderCell>
                <Table.HeaderCell textAlign='right'>{formatNumber(netIncome)}</Table.HeaderCell>
-               {/* <Table.HeaderCell textAlign='right'>{formatNumber(netIncome / exchangeRate)}</Table.HeaderCell> */}
+               <Table.HeaderCell textAlign='right'></Table.HeaderCell>
             </Table.Row>}
       </Table.Footer>
 

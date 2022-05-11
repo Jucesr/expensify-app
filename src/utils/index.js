@@ -25,3 +25,5 @@
 export const randomInt = (min, max) => {
    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export const addOrRemove = (arr, item) => arr.includes(item) ? arr.filter(i => i !== item) : [ ...arr, item ];

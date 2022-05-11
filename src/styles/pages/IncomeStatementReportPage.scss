@@ -17,6 +17,18 @@
     font-size: 1.1rem !important;
 }
 
+.IncomeStatementTableHeaderRow.disable{
+   td {
+      color: rgba(40,40,40,.3) !important;
+   }
+}
+
+.IncomeStatementTableCellMain{
+   &:hover {
+      cursor: pointer;
+   }
+}
+
 .IncomeStatementTableHeaderRow th{
    padding: 0.2rem !important
 }

@@ -1,5 +1,12 @@
 # Release notes.
 
+### V5.0
+Date: May 11th, 2022
+
+* [NEW] 
+   *  Add feature to add incomes.
+   *  Add Income statement report page.
+
 ### V4.2
 Date: Jul 12th, 2021
 
