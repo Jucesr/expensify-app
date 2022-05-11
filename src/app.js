@@ -4,10 +4,12 @@ import {Provider} from 'react-redux';
 import AppRouter, {history} from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import {setExpenses} from './actions/expenses';
+import {setIncomes} from './actions/incomes';
 import {login, logout} from './actions/auth';
 import {setLanguage} from './actions/lang';
 import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
+
 
 import 'normalize.css/normalize.css';
 import 'react-dates/lib/css/_datepicker.css';
@@ -44,8 +46,10 @@ if(defaultLanguage == 'es'){
 
 firebase.auth().onAuthStateChanged( (user) => {
   if(user){
-    store.dispatch(login(user)).then( () => {
-      return store.dispatch(setExpenses())
+    store.dispatch(login(user)).then( async () => {
+      await store.dispatch(setExpenses())
+      await store.dispatch(setIncomes())
+      return 
     }).then( () => {
       renderApp();
     });
