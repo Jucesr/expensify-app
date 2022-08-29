@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Route, Switch} from 'react-router-dom';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import ExpenseDashBoardPage from '../components/ExpenseDashBoardPage';
 import ExpenseTimeLinePage from '../components/ExpenseTimeLinePage';
@@ -18,7 +18,7 @@ import PublicRoute from './PublicRoute';
 export const history = createHistory();
 
 const AppRouter = () => (
-  <Router history={history}>
+  <HashRouter history={history}>
     <div>
       <Switch>
         <PublicRoute path="/" component={LoginPage} exact={true} />
@@ -35,7 +35,7 @@ const AppRouter = () => (
       </Switch>
     </div>
 
-  </Router>
+  </HashRouter>
 )
 
 export default AppRouter;
