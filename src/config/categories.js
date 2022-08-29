@@ -7,5 +7,6 @@ export default [
    'leisure',
    'transport',
    'travel',
+   'kids',
    'other',
 ]

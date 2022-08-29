@@ -8,7 +8,7 @@ export default (expenses, {text, sortBy, startDate, endDate, category, payment_m
     const createdAtMoment = moment(expense.createdAt);
     const startDateMatch = startDate ? startDate.isSameOrBefore(createdAtMoment, 'day') : true
     const endDateMatch = endDate ? endDate.isSameOrAfter(createdAtMoment, 'day') : true
-    const textMatch = text.length === 0 || expense.description.toLowerCase().includes(text.toLowerCase());
+    const textMatch = text.length === 0 || expense.description.toLowerCase().includes(text.toLowerCase()) || expense.note.toLowerCase().includes(text.toLowerCase());
     const categoryMatch = category == 'disabled' ? true : (expense.category == category);
     const paymentMethodMatch = payment_method == 'disabled' ? true : (expense.payment_method == payment_method);
     return startDateMatch && endDateMatch && textMatch && categoryMatch && paymentMethodMatch;

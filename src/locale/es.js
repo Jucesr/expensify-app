@@ -23,6 +23,16 @@ export default {
     leisure: 'Diversión',
     transport: 'Transporte',
     travel: 'Viáticos',
+    kids: 'Hijos',
+    other: 'Otros'
+  },
+  categories_income: {
+    salary: 'Salario',
+    bonus: 'Bono',
+    side_project_income: 'Ingreso por trabajo adicional',
+    side_project_rent: 'Renta por trabajo adicional',
+    lending: 'Préstamo',
+    travel: 'Viáticos',
     other: 'Otros'
   },
   payment_methods: {
@@ -35,7 +45,7 @@ export default {
   descriptionPlaceholder: 'Descripción',
   amountPlaceholder: 'Costo',
   notePlaceholder: 'Agrege una descripción mas extensa (opcional)',
-  removeExpenseButton: 'Borrar Gasto',
+  removeExpenseButton: 'Borrar',
   saveExpenseButton: 'Guardar',
   newExpenseButton: 'Agregar',
   footerMessage: 'Idea original de {p1} en su {p2}. Nuevas características agregadas por {p3}.',
@@ -48,7 +58,10 @@ export default {
     buttonCategories: 'Ver categorias',
     noExpenseMessage: 'No hay registro de gastos.',
     categoryTitle: 'Gastos por categoria',
-    paymentMethodTitle: 'Gastos por método de pago'
+    paymentMethodTitle: 'Gastos por método de pago',
+    buttonIncome: 'Ver ingresos',
+    buttonExpense: 'Ver gastos',
+    buttonAddIncome: 'Agregar ingreso',
   },
   pageTimeLineExpense: {
     title: 'Gastos por mes'
@@ -71,5 +84,17 @@ export default {
     spanishPlaceholder: 'Descripción en español',
     englishPlaceholder: 'Descripción en ingles',
     errorForm: 'Campos vacios'
+  },
+  incomePage: {
+    tableIncomeText: 'Ingreso',
+    tableAmountText: 'Importe',
+    pageAddIncomeTitle: 'Agregar Ingreso',
+    summaryMessageTitle: 'Viendo {p1} ingreso{p2}, un total de {p3}',
+    summaryMessageSubitle: 'No mostrando {p1} ingreso{p2} por que se aplicó un filtro',
+    pageEditIncomeTitle: 'Editar Ingreso',
+  },
+  incomeStatementPage: {
+    title: 'Estado de cuenta',
+    button: 'Ver estado de cuenta',
   }
 }

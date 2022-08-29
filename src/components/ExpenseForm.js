@@ -13,9 +13,11 @@ export default class ExpenseForm extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const defaultCategory = Object.keys(props.categories)[0];
     this.state = {
       payment_method: props.expense ? (props.expense.payment_method ? props.expense.payment_method : 'cash' ) : 'cash',
-      category: props.expense ? (props.expense.category ? props.expense.category : 'food' ) : 'food',
+      category: props.expense ? (props.expense.category ? props.expense.category : defaultCategory ) : defaultCategory,
       description: props.expense ? props.expense.description : '',
       note: props.expense ? props.expense.note : '',
       amount: props.expense ? (props.expense.amount / 100 ).toString(): '',
@@ -98,15 +100,9 @@ export default class ExpenseForm extends React.Component {
           </select>
 
           <select className="text-input" value={this.state.category} onChange={ this.onSelectChange }>
-            <option value="food" >{categories.food}</option>
-            <option value="bills" >{categories.bills}</option>
-            <option value="housing" >{categories.housing}</option>
-            <option value="clothing" >{categories.clothing}</option>
-            <option value="health" >{categories.health}</option>
-            <option value="leisure" >{categories.leisure}</option>
-            <option value="transport" >{categories.transport}</option>
-            <option value="travel" >{categories.travel}</option>
-            <option value="other" >{categories.other}</option>
+            {Object.keys(categories).map( (key) => {
+              return <option key={key} value={key}>{categories[key]}</option>
+            })}
             {this.props.extraCategories.map(opt => <option value={opt.code}>{opt.spanishDescription}</option>)}
           </select>
 
@@ -141,7 +137,7 @@ export default class ExpenseForm extends React.Component {
           >
           </textarea>
           <div>
-            <button className="button">{this.state.editMode ? `${this.props.saveExpenseButton} ` : `${this.props.newExpenseButton} `} {this.props.expenseButton}</button>
+            <button className="button">{this.state.editMode ? `${this.props.saveExpenseButton} ` : `${this.props.newExpenseButton} `}</button>
           </div>
         </form>
     )

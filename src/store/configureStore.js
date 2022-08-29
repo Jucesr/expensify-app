@@ -2,6 +2,7 @@ import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import undoable, { distinctState } from 'redux-undo';
 import thunk from 'redux-thunk';
 import expensesReducer from '../reducers/expenses';
+import incomesReducer from '../reducers/incomes';
 import filtersReducer from '../reducers/filters';
 import authReducer from '../reducers/auth';
 import langReducer from '../reducers/lang';
@@ -16,6 +17,7 @@ export default () => {
         limit: 3,
         filter: distinctState()
       }),
+      incomes: incomesReducer,
       filters: filtersReducer,
       auth: authReducer,
       lang: langReducer,

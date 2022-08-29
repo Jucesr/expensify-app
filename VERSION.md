@@ -1,5 +1,31 @@
 # Release notes.
 
+### V6.0
+Date: Agu 29th, 2022
+
+* [FIX] 
+   *  Allow to find by note 'description'.
+   *  Upload dist folder to deploy on github.
+
+### V5.1
+Date: May 11th, 2022
+
+* [FIX] 
+   *  Fixed a bug in income statement.
+   
+### V5.0
+Date: May 11th, 2022
+
+* [NEW] 
+   *  Add feature to add incomes.
+   *  Add Income statement report page.
+
+### V4.2
+Date: Jul 12th, 2021
+
+* [NEW] 
+   *  Add new category 'Kids'
+
 ### V4.1
 Date: May 24th, 2021
 
