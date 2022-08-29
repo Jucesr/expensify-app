@@ -1,5 +1,12 @@
 # Release notes.
 
+### V6.0
+Date: Agu 29th, 2022
+
+* [FIX] 
+   *  Allow to find by note 'description'.
+   *  Upload dist folder to deploy on github.
+
 ### V5.1
 Date: May 11th, 2022
 
