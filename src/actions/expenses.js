@@ -6,6 +6,7 @@ export const addExpense = (expenseData = {}) => {
     const {
       payment_method = '',
       category = '',
+      sub_category = '',
       description = '',
       note = '',
       amount = 0,
@@ -15,6 +16,7 @@ export const addExpense = (expenseData = {}) => {
     const expense = {
       payment_method,
       category,
+      sub_category,
       description,
       note,
       amount,

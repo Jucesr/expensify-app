@@ -4,6 +4,7 @@ export const addCategory = (itemData = {}) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     const {
+      parent_id = '',
       code = '',
       englishDescription = '',
       spanishDescription = '',
@@ -11,6 +12,7 @@ export const addCategory = (itemData = {}) => {
     } = itemData;
 
     const item = {
+      parent_id,
       code,
       spanishDescription,
       englishDescription,

@@ -8,7 +8,7 @@ import getIncomes from '../../selectors/expenses';
 import ListFilters from "./ListFilters";
 import Sumary from "./Sumary";
 
-const numberOfItemsToShow = 2;
+const numberOfItemsToShow = 50;
 
 const initialState = {
   startDate: moment().startOf('month'),

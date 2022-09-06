@@ -40,7 +40,8 @@ export const ExpenseSumary = ({ expensesTotal, expenseCount, hideExpenses, dicti
           <Link className="button button-gray" to="/income">{dictionary.pageReportExpense.buttonIncome}</Link>
           <Link className="button" to="/details">{dictionary.pageReportExpense.button}</Link>
           <Link className="button button-red" to="/timeline">{dictionary.pageReportExpense.buttonTimeLine}</Link>
-          <Button
+          <Link className="button button-green" to="/cards">{dictionary.pageReportExpense.buttonCreditCard}</Link>
+          {/* <Button
             color="green"
             className="button button-red"
             onClick={() => {
@@ -65,7 +66,7 @@ export const ExpenseSumary = ({ expensesTotal, expenseCount, hideExpenses, dicti
             }}
           >
             {dictionary.pageReportExpense.buttonCreditCard}
-          </Button>
+          </Button> */}
           <Link className="button button-purple" to="/categories">{dictionary.pageReportExpense.buttonCategories}</Link>
         </div>
 

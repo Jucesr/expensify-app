@@ -6,6 +6,7 @@ import configureStore from './store/configureStore';
 import {setExpenses} from './actions/expenses';
 import {setIncomes} from './actions/incomes';
 import {setCategories} from './actions/categories';
+import {setCards} from './actions/cards';
 import {login, logout} from './actions/auth';
 import {setLanguage} from './actions/lang';
 import {firebase} from './firebase/firebase';
@@ -51,8 +52,10 @@ firebase.auth().onAuthStateChanged( (user) => {
       await store.dispatch(setExpenses())
       await store.dispatch(setIncomes())
       return 
-    }).then( () => {
-      return store.dispatch(setCategories())
+    }).then( async () => {
+      await store.dispatch(setCategories())
+      await store.dispatch(setCards())
+      return
     }).then( () => {
       renderApp();
     });

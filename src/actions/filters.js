@@ -36,7 +36,17 @@ export const setCategoryFilter = (category) => ({
   category
 });
 
+export const setSubCategoryFilter = (category) => ({
+  type: 'SET_SUB_CATEGORY',
+  category
+});
+
 export const setPaymentMethodFilter = (payment_method) => ({
   type: 'SET_PAYMENT_METHOD',
   payment_method
+});
+
+export const setCardIdFilter = (card_id) => ({
+  type: 'SET_CARD_ID',
+  card_id
 });

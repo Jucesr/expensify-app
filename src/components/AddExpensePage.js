@@ -30,6 +30,7 @@ export class AddExpensePage extends React.Component {
               categories={dictionary.categories}
               extraCategories={this.props.categories}
               payment_methods={dictionary.payment_methods}
+              cards={this.props.cards}
             />
           </div>
       </div>
@@ -44,6 +45,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   dictionary: state.lang.dictionary,
   categories: state.categories,
+  cards: state.cards,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddExpensePage);

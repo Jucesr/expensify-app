@@ -58,6 +58,7 @@ export default {
     buttonCategories: 'Ver categorias',
     noExpenseMessage: 'No hay registro de gastos.',
     categoryTitle: 'Gastos por categoria',
+    subCategoryTitle: 'Gastos de',
     paymentMethodTitle: 'Gastos por método de pago',
     buttonIncome: 'Ver ingresos',
     buttonExpense: 'Ver gastos',
@@ -75,11 +76,13 @@ export default {
   },
   categoryPage: {
     addCategoryButton: 'Agregar categoria',
+    tableHeaderCategory: 'Categoria Padre',
     tableHeaderCode: 'Código',
     tableHeaderSpanish: 'Español',
     tableHeaderEnglish: 'Ingles',
   },
   categoryForm: {
+    categoryPlaceholder: 'Categoria padre',
     codePlaceholder: 'Código',
     spanishPlaceholder: 'Descripción en español',
     englishPlaceholder: 'Descripción en ingles',

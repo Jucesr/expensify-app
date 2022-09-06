@@ -12,6 +12,7 @@ const CategoriesPage = (props) => {
    const [item, setItem] = useState(null)
 
    const d = dictionary.categoryPage;
+   const baseCategories = dictionary.categories;
 
    return (
       <div className="content-container">
@@ -21,6 +22,7 @@ const CategoriesPage = (props) => {
                className="button button-red"
                onClick={() => {
                   setModal(true)
+                  setItem(null)
                }}
             >
                {dictionary.categoryPage.addCategoryButton}
@@ -28,6 +30,7 @@ const CategoriesPage = (props) => {
          </div>
          <div>
             <div className="list-header">
+               <div >{d.tableHeaderCategory}</div>
                <div >{d.tableHeaderCode}</div>
                <div >{d.tableHeaderSpanish}</div>
                <div >{d.tableHeaderEnglish}</div>
@@ -45,6 +48,9 @@ const CategoriesPage = (props) => {
                         setItem(c)
                      }}
                   >
+                     <div>
+                        {baseCategories[c.parent_id]}
+                     </div>
                      <div>
                         {c.code}
                      </div>
