@@ -31,3 +31,7 @@ See the [VERSION.md](VERSION.md) file for details
 
 * Developed with the purpose of showing my programming skills.
 * I actually use this every day. 
+
+## Pending features
+
+* Button to bulk update expenses, modal form with selector for category, subcategory, payment and credit card id 

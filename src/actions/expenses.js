@@ -10,7 +10,8 @@ export const addExpense = (expenseData = {}) => {
       description = '',
       note = '',
       amount = 0,
-      createdAt = 0
+      createdAt = 0,
+      card_id = null,
     } = expenseData;
 
     const expense = {
@@ -20,7 +21,8 @@ export const addExpense = (expenseData = {}) => {
       description,
       note,
       amount,
-      createdAt
+      createdAt,
+      card_id
     };
 
     return database.ref(`users/${uid}/expenses`).push(expense).then((ref) => {

@@ -28,6 +28,8 @@ export class AddIncomePage extends React.Component {
             newExpenseButton={dictionary.newExpenseButton}
             categories={dictionary.categories_income}
             payment_methods={dictionary.payment_methods}
+            extraCategories={[]}
+            cards={[]}
           />
         </div>
       </div>

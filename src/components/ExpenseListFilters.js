@@ -132,6 +132,9 @@ export class ExpenseListFilters extends React.Component {
                         <option value="disabled">
                            {dictionary.filterByCategoryPlaceholder}
                         </option>
+                        <option value="">
+                           Sin clasificar
+                        </option>
                         {sub_categories.map((pm) => (
                            <option value={pm.code} key={pm.code}>
                               {pm.spanishDescription}

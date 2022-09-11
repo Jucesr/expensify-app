@@ -2,43 +2,19 @@ import React, {useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Card, Progress} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import numeral from 'numeral';
+
 import moment from 'moment';
 
 import CTable from '../../components/Table';
 import ModalForm from '../../components/ModalForm';
+import CardItem from './CardItem';
 
 import {addCard, editCard} from '../../actions/cards';
 
-import {randomInt, sortByDate} from '../../utils/index';
-
-const formatNumber = (number) => numeral(number / 100).format('$0,0.00');
-
-// function to generate a rendom number of expenses
-const generateData = (numberOfElements) => {
-   const incomes = [];
-   for (let i = 0; i < numberOfElements; i++) {
-      incomes.push({
-         id: i,
-         description: `Gasto ${i}`,
-         amount: randomInt(10000, 100000),
-         createdAt: moment()
-            .subtract(randomInt(0, 12), 'months')
-            .subtract(randomInt(0, 15), 'days')
-            .toDate(),
-         category: 'food',
-         paymentMethod: 'credit_card',
-         card_id: ['-NAhTYj7o-pdgg0UCBC3', '-NB9-UiGx21WDJfHbMoH'][randomInt(0, 1)],
-      });
-   }
-
-   return incomes;
-};
-// const _incomes = generateIncomes(3, categories_income);
-// const _expenses = generateIncomes(10000, categories_expense);
+import {sortByDate} from '../../utils/index';
 
 const CardsPage = (props) => {
-   const {expenses} = props;
+   const {expenses, cards} = props;
    const [modalItem, setModalItem] = useState(null);
    const [cardSelected, setCardSelected] = useState(null);
    const [activeMonth, setActiveMonth] = useState(moment());
@@ -46,12 +22,12 @@ const CardsPage = (props) => {
    const last12Months = Array(12)
       .fill()
       .map((_, i) => {
-         return moment().subtract(i, 'months');
+         return moment().subtract(i - 1, 'months');
       })
       .reverse();
 
-   const expensesOfCard = useMemo(() => {
-      if(!cardSelected) return [];
+   const expensesOfRange = useMemo(() => {
+      if (!cardSelected) return [];
       const startRange = moment(activeMonth)
          .subtract(1, 'month')
          .set('date', cardSelected.pay_date)
@@ -62,7 +38,6 @@ const CardsPage = (props) => {
          .set('date', cardSelected.pay_date)
          .endOf('day');
 
-
       const filteredExpenses = expenses.filter((expense) => {
          const createdAtMoment = moment(expense.createdAt);
          const startDateMatch = startRange.isSameOrBefore(
@@ -71,9 +46,19 @@ const CardsPage = (props) => {
          );
          const endDateMatch = endRange.isSameOrAfter(createdAtMoment, 'day');
 
+         return startDateMatch && endDateMatch;
+      });
+
+      return filteredExpenses;
+   }, [cardSelected, activeMonth, expenses]);
+
+   const expensesOfCard = useMemo(() => {
+      if (!cardSelected) return [];
+
+      const filteredExpenses = expensesOfRange.filter((expense) => {
          const expenseBelongsToCard = expense.card_id === cardSelected.id;
 
-         return startDateMatch && endDateMatch && expenseBelongsToCard;
+         return expenseBelongsToCard;
       });
 
       // Get the total of the filtered expenses
@@ -91,7 +76,53 @@ const CardsPage = (props) => {
 
       // Finnaly sort them by date
       return expensesWithPercentage.sort(sortByDate('createdAt'));
-   }, [cardSelected, activeMonth, expenses]);
+   }, [cardSelected, expensesOfRange]);
+
+   const percentagesOfCards = useMemo(() => {
+      // Get the percentage of used based on card limit amount against the total of expenses of the card
+      const percentages = cards.reduce((acum, card) => {
+         const startRange = moment(activeMonth)
+            .subtract(1, 'month')
+            .set('date', card.pay_date)
+            .add(1, 'day')
+            .startOf('day');
+
+         const endRange = moment(activeMonth)
+            .set('date', card.pay_date)
+            .endOf('day');
+
+         const filteredExpenses = expenses.filter((expense) => {
+            const createdAtMoment = moment(expense.createdAt);
+            const startDateMatch = startRange.isSameOrBefore(
+               createdAtMoment,
+               'day',
+            );
+            const endDateMatch = endRange.isSameOrAfter(createdAtMoment, 'day');
+
+            return startDateMatch && endDateMatch;
+         });
+
+         const expensesOfCard = filteredExpenses.filter((expense) => {
+            const expenseBelongsToCard = expense.card_id === card.id;
+
+            return expenseBelongsToCard;
+         });
+
+         const total = expensesOfCard.reduce((acc, expense) => {
+            return acc + expense.amount;
+         }, 0);
+
+         return {
+            ...acum,
+            [card.id]: {
+               percentage: parseFloat(((total / card.amount) * 100).toFixed(2)),
+               total: total,
+            },
+         };
+      }, {});
+
+      return percentages;
+   }, [activeMonth, cards, expenses]);
 
    return (
       <div>
@@ -112,47 +143,14 @@ const CardsPage = (props) => {
          <div className="content-container">
             <Card.Group>
                {props.cards.map((card) => (
-                  <Card key={card.id}>
-                     <Card.Content>
-                        <Card.Header>{card.name}</Card.Header>
-                        <Card.Meta>Fecha de corte: {card.pay_date}</Card.Meta>
-                        <Card.Description>{card.number}</Card.Description>
-                     </Card.Content>
-                     <Card.Content extra>
-                        <Progress progress percent={55}>
-                           {formatNumber(card.amount)}
-                        </Progress>
-                     </Card.Content>
-                     <Card.Content extra>
-                        <div className="ui two buttons">
-                           <Button
-                              basic={
-                                 cardSelected
-                                    ? cardSelected.id !== card.id
-                                    : true
-                              }
-                              color="green"
-                              onClick={() => {
-                                 setCardSelected(card);
-                              }}
-                           >
-                              Ver gastos
-                           </Button>
-                           <Button
-                              basic
-                              color="blue"
-                              onClick={() => {
-                                 setModalItem({
-                                    ...card,
-                                    amount: card.amount / 100,
-                                 });
-                              }}
-                           >
-                              Editar
-                           </Button>
-                        </div>
-                     </Card.Content>
-                  </Card>
+                  <CardItem
+                     key={card.id}
+                     card={card}
+                     setCardSelected={setCardSelected}
+                     setModalItem={setModalItem}
+                     percentagesOfCards={percentagesOfCards}
+                     cardSelected={cardSelected}
+                  />
                ))}
             </Card.Group>
          </div>
@@ -281,7 +279,7 @@ CardsPage.propTypes = {};
 
 const mapStateToProps = (state) => ({
    cards: state.cards,
-   expenses: generateData(500),
+   expenses: state.expenses.present,
 });
 
 const mapDispatchToProps = (dispatch) => ({
