@@ -1,9 +1,10 @@
 import React from 'react';
+import {Loader} from 'semantic-ui-react';
 
 const LoadingPage = () => (
-  <div className="loader">
-    <img className="loader__image" src="images/loader.gif"></img>
-  </div>
+   <div className="loader">
+      <Loader inverted>Cargando</Loader>
+   </div>
 );
 
 export default LoadingPage;
