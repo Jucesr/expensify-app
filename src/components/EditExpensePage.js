@@ -36,7 +36,9 @@ export class EditExpensePage extends React.Component{
             newExpenseButton={dictionary.newExpenseButton}
             expenseButton={dictionary.tableExpense}
             categories={dictionary.categories}
+            extraCategories={this.props.categories}
             payment_methods={dictionary.payment_methods}
+            cards={this.props.cards}
           />
           <button className="button button-gray" onClick={this.onClick}>{dictionary.removeExpenseButton}</button>
         </div>
@@ -48,7 +50,9 @@ export class EditExpensePage extends React.Component{
 
 const mapStateToProps = (state, props) => ({
   expense: state.expenses.present.find((expense) => expense.id == props.match.params.id),
-  dictionary: state.lang.dictionary
+  dictionary: state.lang.dictionary,
+  categories: state.categories,
+  cards: state.cards,
 });
 
 const mapDispatchToProps = (dispatch) => ({

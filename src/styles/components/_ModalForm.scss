@@ -1,0 +1,21 @@
+.ModalForm{
+   top: 10% !important;
+
+   .ActionButton{
+      display: flex;
+      flex-direction: flex-end;
+      margin-top: 1rem;
+
+      button{
+         width: 100%;
+      }
+   }
+
+   
+}
+
+.Modal_form_field_label {
+   font-weight: bold;
+   margin-top: 10px;
+   margin-bottom: 8px;
+ }

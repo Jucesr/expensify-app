@@ -12,6 +12,9 @@ import IncomePage from '../components/IncomePage/index';
 import AddIncomePage from '../components/IncomePage/AddIncomePage';
 import EditIncomePage from '../components/IncomePage/EditIncomePage';
 import IncomeStatementReportPage from '../components/IncomeStatementReportPage/index';
+import CategoriesPage from '../components/CategoriesPage';
+import CardsPage from '../routes/CardsPage';
+import AddCardPage from '../routes/CardsPage/AddCardPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -31,6 +34,9 @@ const AppRouter = () => (
         <PrivateRoute path="/add_income" component={AddIncomePage} />
         <PrivateRoute path="/edit_income/:id" component={EditIncomePage} />
         <PrivateRoute path="/income_statement" component={IncomeStatementReportPage} />
+        <PrivateRoute path="/categories" component={CategoriesPage} />
+        <PrivateRoute path="/cards" component={CardsPage} />
+        <PrivateRoute path="/add_card" component={AddCardPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

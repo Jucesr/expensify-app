@@ -6,7 +6,9 @@ const filterReducerDefaultState = {
   startDate: moment().startOf('month'),
   endDate: moment().endOf('month'),
   category: 'disabled',
+  sub_category: 'disabled',
   payment_method: 'disabled',
+  card_id: 'disabled',
 };
 
 export default (state = filterReducerDefaultState, action) => {
@@ -50,14 +52,27 @@ export default (state = filterReducerDefaultState, action) => {
     case 'SET_CATEGORY':
       return {
         ...state,
-        category: action.category
+        category: action.category,
+        sub_category: 'disabled'
+      }
+    break;
+    case 'SET_SUB_CATEGORY':
+      return {
+        ...state,
+        sub_category: action.category
       }
     break;
     
     case 'SET_PAYMENT_METHOD':
       return {
         ...state,
-        payment_method: action.payment_method
+        payment_method: action.payment_method,
+        card_id: 'disabled'
+      }
+    case 'SET_CARD_ID':
+      return {
+        ...state,
+        card_id: action.card_id
       }
     break;
 

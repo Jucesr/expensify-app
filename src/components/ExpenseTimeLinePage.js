@@ -75,7 +75,6 @@ const ExpenseTimeLinePage = (props) => {
                const { row, column } = selection;
                const selected = googleData[row][column - 1];
                const expenses = expensesByMonth[selected]
-               console.log(expenses);
                setSelectedExpenses(expenses)
             }
          }
@@ -150,7 +149,7 @@ const ExpenseTimeLinePage = (props) => {
                           
 
                            return sortAmount === 'up' ? a.amount - b.amount : b.amount - a.amount
-                        }).map(expense => <Table.Row>
+                        }).map(expense => <Table.Row key={expense.id}>
                            <Table.Cell>{moment(expense.createdAt).format('MMMM Do , YYYY')}</Table.Cell>
                            <Table.Cell>{expense.description}</Table.Cell>
                            <Table.Cell>{dictionary.categories[expense.category]}</Table.Cell>

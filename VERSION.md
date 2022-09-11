@@ -1,5 +1,15 @@
 # Release notes.
 
+### V7.0
+Date: September 5th, 2022
+
+* [NEW] 
+   *  Allow to manage sub categories as catalog items
+   *  Allow to manage credit cards as catalog items
+   *  Expenses list will be shown when clicking on the category row in IncomeStatement
+   *  Custom Table component
+   *  Button to bulk update expenses, modal form with selector for category, subcategory, payment and credit card id 
+
 ### V6.0
 Date: Agu 29th, 2022
 
