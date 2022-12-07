@@ -2,7 +2,7 @@
    "name": "expensify-app",
    "version": "7.0.0",
    "engines": {
-      "node": "14.15.4"
+      "node": "18.12.0"
    },
    "description": "A web app built with reactjs that help people control their expenses.",
    "main": "index.js",
@@ -38,7 +38,7 @@
       "identity-obj-proxy": "^3.0.0",
       "lodash.sortby": "^4.7.0",
       "moment": "^2.19.2",
-      "node-sass": "^4.14.1",
+      "node-sass": "^8.0.0",
       "normalize.css": "^7.0.0",
       "numeral": "^2.0.6",
       "raf": "^3.3.2",

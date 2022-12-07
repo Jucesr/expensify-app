@@ -56,7 +56,7 @@ const CardsPage = (props) => {
       if (!cardSelected) return [];
 
       const filteredExpenses = expensesOfRange.filter((expense) => {
-         const expenseBelongsToCard = expense.card_id === cardSelected.id;
+         const expenseBelongsToCard = expense.card_id === cardSelected.id && expense.payment_method === 'credit_card';
 
          return expenseBelongsToCard;
       });

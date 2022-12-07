@@ -30,10 +30,22 @@ const generateIncomes = (numberOfElements, cats) => {
 // const _incomes = generateIncomes(3, categories_income);
 // const _expenses = generateIncomes(10000, categories_expense);
 
-const groupItemsByCategory = (items, activeMonth, dictonary_categories) => {
+const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categories) => {
+   
    // Filter out incomes that are not in the active month
-   const startRange = moment(activeMonth).startOf('month');
-   const endRange = moment(activeMonth).endOf('month');
+   let startRange;
+   let endRange;
+   if (activeMonth) {
+      const year = activeYear.year();
+      const month = activeMonth.month();
+      startRange = moment().year(year).month(month).startOf('month');
+      endRange = moment().year(year).month(month).endOf('month');
+   }else{
+      const year = activeYear.year();
+      startRange = moment().year(year).startOf('year');
+      endRange = moment().year(year).endOf('year');
+   }
+
    const filteredIncomes = items.filter((income) => {
       const createdAtMoment = moment(income.createdAt);
       const startDateMatch = startRange.isSameOrBefore(createdAtMoment, 'day');
@@ -42,9 +54,21 @@ const groupItemsByCategory = (items, activeMonth, dictonary_categories) => {
    });
 
    // Get incomes from previuos month to get % of increase/decrease
-   const previuosMonth = moment(activeMonth).subtract(1, 'months');
-   const _startRange = moment(previuosMonth).startOf('month');
-   const _endRange = moment(previuosMonth).endOf('month');
+   let _startRange;
+   let _endRange;
+   if (activeMonth) {
+      const previuosMonth = moment(activeMonth).subtract(1, 'months');
+      const year = activeYear.year();
+      const month = previuosMonth.month();
+      _startRange = moment().year(year).month(month).startOf('month');
+      _endRange = moment().year(year).month(month).endOf('month');
+   }else{
+      const previousYear = moment(activeYear).subtract(1, 'years');
+      const year = previousYear.year();
+      _startRange = moment().year(year).startOf('year');
+      _endRange = moment().year(year).endOf('year');
+   }
+
    const previousIncomes = items.filter((income) => {
       const createdAtMoment = moment(income.createdAt);
       const _startDateMatch = _startRange.isSameOrBefore(
@@ -112,7 +136,8 @@ const IncomeStatementReportPage = (props) => {
    // const incomes = _incomes;
    // const expenses = _expenses
 
-   const [activeMonth, setActiveMonth] = useState(moment());
+   const [activeYear, setActiveYear] = useState(moment());
+   const [activeMonth, setActiveMonth] = useState(null);
    const [incomeFilters, setIncomeFilters] = useState(['travel']);
    const [expenseFilters, setExpenseFilters] = useState(['travel']);
    const [modalExpenses, setModalExpenses] = useState([]);
@@ -120,19 +145,26 @@ const IncomeStatementReportPage = (props) => {
    const incomesRows = useMemo(() => {
       return groupItemsByCategory(
          incomes,
+         activeYear,
          activeMonth,
          dictionary.categories_income,
       );
-   }, [incomes, activeMonth]);
+   }, [incomes, activeYear, activeMonth]);
 
    const expensesRows = useMemo(() => {
-      return groupItemsByCategory(expenses, activeMonth, dictionary.categories);
-   }, [expenses, activeMonth]);
+      return groupItemsByCategory(expenses, activeYear, activeMonth, dictionary.categories);
+   }, [expenses, activeYear, activeMonth]);
+
+   const lastFiveYears = Array(5)
+      .fill()
+      .map((_, i) => {
+         return moment().subtract(i, 'year');
+      });
 
    const lastSixMonths = Array(12)
       .fill()
       .map((_, i) => {
-         return moment().subtract(i, 'months');
+         return moment().month(i);
       });
 
    const netIncome = useMemo(() => {
@@ -173,16 +205,46 @@ const IncomeStatementReportPage = (props) => {
 
             <div style={{display: 'flex'}}>
                <React.Fragment>
-                  {lastSixMonths.reverse().map((month) => {
+                  {lastFiveYears.reverse().map((year) => {
+                     return (
+                        <Button
+                           key={year.format('YYYY')}
+                           color="blue"
+                           basic={
+                              activeYear.format('YYYY') !==
+                              year.format('YYYY')
+                           }
+                           onClick={() => setActiveYear(year)}
+                        >
+                           {moment(year).format('YYYY')}
+                        </Button>
+                     );
+                  })}
+               </React.Fragment>
+            </div>
+            <div style={{display: 'flex'}}>
+               <React.Fragment>
+                  {lastSixMonths.map((month) => {
                      return (
                         <Button
                            key={month.format('MMMM')}
                            color="blue"
                            basic={
-                              activeMonth.format('MMMM') !==
-                              month.format('MMMM')
+                              activeMonth != null ? activeMonth.format('MMMM') !==
+                              month.format('MMMM') : true 
                            }
-                           onClick={() => setActiveMonth(month)}
+                           onClick={() => {
+                              if (activeMonth != null) {
+                                 if (activeMonth.format('MMMM') !==
+                                    month.format('MMMM')) {
+                                    setActiveMonth(month);
+                                 } else {
+                                    setActiveMonth(null);
+                                 }
+                              } else {
+                                 setActiveMonth(month);
+                              }
+                           }}
                         >
                            {moment(month).format('MMMM')}
                         </Button>
@@ -271,26 +333,30 @@ const IncomeStatementReportPage = (props) => {
                   <CTable
                      title={'Egresos'}
                      rows={modalExpenses}
-                     columns={[{
-                        name: 'createdAt',
-                        label: 'Fecha',
-                        format: 'date',
-                     },{
-                        name: 'sub_category',
-                        label: 'Subcategoría',
-
-                     },{
-                        name: 'description',
-                        label: 'Descripción',
-
-                     },{
-                        name: 'payment_method',
-                        label: 'Método de pago',
-                     },{
-                        name: 'amount',
-                        label: 'Importe',
-                        format: 'currency',
-                     }]}
+                     columns={[
+                        {
+                           name: 'createdAt',
+                           label: 'Fecha',
+                           format: 'date',
+                        },
+                        {
+                           name: 'sub_category',
+                           label: 'Subcategoría',
+                        },
+                        {
+                           name: 'description',
+                           label: 'Descripción',
+                        },
+                        {
+                           name: 'payment_method',
+                           label: 'Método de pago',
+                        },
+                        {
+                           name: 'amount',
+                           label: 'Importe',
+                           format: 'currency',
+                        },
+                     ]}
                   />
                </Modal.Description>
             </Modal.Content>

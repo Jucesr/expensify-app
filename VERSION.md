@@ -1,5 +1,14 @@
 # Release notes.
 
+### V7.1
+Date: December 6th, 2022
+
+* [FIX] 
+   *  Filter bug in income's list
+   *  Filter bug in card's expenses list
+* [NEW] 
+   *  Add year in IncomeStatement report
+
 ### V7.0
 Date: September 5th, 2022
 
