@@ -5,7 +5,7 @@ A web app built with reactjs that help people control their expenses.
 * Filter and sort expenses.
 * View a pie chart with all expenses by category.
 
-https://julio-expensify.herokuapp.com/dashboard
+https://jucesr.github.io/expensify-app/#/dashboard
 
 ## Built With
 
