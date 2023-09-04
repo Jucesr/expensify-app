@@ -5,7 +5,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
+console.log(`Environment: ${process.env.NODE_ENV}`)
 switch (process.env.NODE_ENV) {
   case "test":
     require('dotenv').config({path: '.env.test'});

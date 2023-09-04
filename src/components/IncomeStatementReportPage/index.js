@@ -51,6 +51,11 @@ const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categori
       const startDateMatch = startRange.isSameOrBefore(createdAtMoment, 'day');
       const endDateMatch = endRange.isSameOrAfter(createdAtMoment, 'day');
       return startDateMatch && endDateMatch;
+   }).map((income) => {
+      return {
+         ...income,
+         month: moment(income.createdAt).format('MMMM'),
+      };
    });
 
    // Get incomes from previuos month to get % of increase/decrease
@@ -87,12 +92,21 @@ const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categori
 
    const rows = Object.keys(dictonary_categories).map((key) => {
       const incomesByCategory = groupedIncomes[key] ? groupedIncomes[key] : [];
+      const incomesByMonthCategory = groupItemsByProperty(incomesByCategory, 'month');
+      const fields = Object.keys(incomesByMonthCategory).reduce((acum, key) => {
+         return {
+            ...acum,
+            [`total_${key}`]: getExpensesTotal(incomesByMonthCategory[key]),
+            [`data_${key}`]: incomesByMonthCategory[key],
+         };
+      }, {});
       return {
          id: key,
          key: key,
          category: dictonary_categories[key],
          total: getExpensesTotal(incomesByCategory),
          data: incomesByCategory,
+         ...fields,
       };
    });
 
@@ -180,6 +194,24 @@ const IncomeStatementReportPage = (props) => {
       return incomes - expenses;
    }, [incomesRows, expensesRows, incomeFilters, expenseFilters]);
 
+
+   const monthColumns = useMemo(() => {
+      
+      return lastSixMonths.map((month) => {
+         const label = moment(month).format('MMMM')
+         return {
+            name: `total_${label}`,
+            label: moment(month).format('MMMM'),
+            format: 'currency',
+            textAlign: 'right',
+            width: 2,
+            onClick: (row) => {
+               setModalExpenses(row[`data_${label}`]);
+            },
+         };
+      });
+   }, [lastSixMonths]);
+
    return (
       <div>
          <div className="page-header">
@@ -265,8 +297,9 @@ const IncomeStatementReportPage = (props) => {
                      onClick: (row) => {
                         setIncomeFilters(addOrRemove(incomeFilters, row.key));
                      },
-                     width: 12,
+                     width: 6,
                   },
+                  ...monthColumns,
                   {
                      name: 'total',
                      label: 'Importe',
@@ -300,8 +333,9 @@ const IncomeStatementReportPage = (props) => {
                      onClick: (row) => {
                         setExpenseFilters(addOrRemove(expenseFilters, row.key));
                      },
-                     width: 12,
+                     width: 6,
                   },
+                  ...monthColumns,
                   {
                      name: 'total',
                      label: 'Importe',
