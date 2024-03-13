@@ -34,7 +34,7 @@ See the [VERSION.md](VERSION.md) file for details
 
 ## How to update page
 1. Generate new build using `yarn build`
-2. Commit and push changes to `develop` branch
+2. Commit and push changes to `master` branch
 
 ## Pending features
 
