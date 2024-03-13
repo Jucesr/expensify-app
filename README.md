@@ -32,6 +32,10 @@ See the [VERSION.md](VERSION.md) file for details
 * Developed with the purpose of showing my programming skills.
 * I actually use this every day. 
 
+## How to update page
+1. Generate new build using `yarn build`
+2. Commit and push changes to `develop` branch
+
 ## Pending features
 
 * Button to bulk update expenses, modal form with selector for category, subcategory, payment and credit card id 
