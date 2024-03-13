@@ -1,11 +1,11 @@
-import React, {useMemo, useState, useReducer, useEffect} from 'react';
-import {Button, Icon, Table, Modal} from 'semantic-ui-react';
-import {connect} from 'react-redux';
+import React, { useMemo, useState, useReducer, useEffect } from 'react';
+import { Button, Icon, Table, Modal } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import numeral from 'numeral';
 import moment from 'moment';
 import CTable from '../Table';
 
-import {groupItemsByProperty, randomInt, addOrRemove} from '../../utils/index';
+import { groupItemsByProperty, randomInt, addOrRemove } from '../../utils/index';
 import getExpensesTotal from '../../selectors/expenses-total';
 
 import payment_methods from '../../config/payment_methods';
@@ -31,7 +31,7 @@ const generateIncomes = (numberOfElements, cats) => {
 // const _expenses = generateIncomes(10000, categories_expense);
 
 const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categories) => {
-   
+
    // Filter out incomes that are not in the active month
    let startRange;
    let endRange;
@@ -40,7 +40,7 @@ const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categori
       const month = activeMonth.month();
       startRange = moment().year(year).month(month).startOf('month');
       endRange = moment().year(year).month(month).endOf('month');
-   }else{
+   } else {
       const year = activeYear.year();
       startRange = moment().year(year).startOf('year');
       endRange = moment().year(year).endOf('year');
@@ -67,7 +67,7 @@ const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categori
       const month = previuosMonth.month();
       _startRange = moment().year(year).month(month).startOf('month');
       _endRange = moment().year(year).month(month).endOf('month');
-   }else{
+   } else {
       const previousYear = moment(activeYear).subtract(1, 'years');
       const year = previousYear.year();
       _startRange = moment().year(year).startOf('year');
@@ -145,8 +145,8 @@ const groupItemsByCategory = (items, activeYear, activeMonth, dictonary_categori
 };
 
 const IncomeStatementReportPage = (props) => {
-   const {expenses, incomes} = props;
-   const {dictionary} = props;
+   const { expenses, incomes } = props;
+   const { dictionary } = props;
    // const incomes = _incomes;
    // const expenses = _expenses
 
@@ -196,28 +196,38 @@ const IncomeStatementReportPage = (props) => {
 
 
    const monthColumns = useMemo(() => {
-      
-      return lastSixMonths.map((month) => {
-         const label = moment(month).format('MMMM')
-         return {
-            name: `total_${label}`,
-            label: moment(month).format('MMMM'),
-            format: 'currency',
-            textAlign: 'right',
-            width: 2,
-            onClick: (row) => {
-               setModalExpenses(row[`data_${label}`]);
-            },
-         };
-      });
-   }, [lastSixMonths]);
+
+      if (activeMonth != null) {
+         return [
+         ]
+      } else {
+         return lastSixMonths.map((month) => {
+            const label = moment(month).format('MMMM')
+            return {
+               name: `total_${label}`,
+               label: moment(month).format('MMMM'),
+               format: 'currency',
+               textAlign: 'right',
+               width: 1,
+               onClick: (row) => {
+                  setModalExpenses(row[`data_${label}`]);
+               },
+            };
+         });
+      }
+
+
+   }, [lastSixMonths, activeMonth]);
+
+   const maxWidth = activeMonth != null ? '80rem' : '100%';
+   const categoryWidth = activeMonth != null ? 6 : 3;
 
    return (
       <div>
          <div className="page-header">
             <div
                className="content-container"
-               style={{display: 'flex', alignItems: 'center'}}
+               style={{ display: 'flex', alignItems: 'center' }}
             >
                <Button
                   basic
@@ -232,10 +242,10 @@ const IncomeStatementReportPage = (props) => {
                </h1>
             </div>
          </div>
-         <div className="content-container" style={{marginBottom: '1rem'}}>
-            {/* render an array of buttons that represents the last six months of the year */}
-
-            <div style={{display: 'flex'}}>
+         <div
+            className="content-container"
+         >
+            <div style={{ display: 'flex', marginBottom: '.4rem' }}>
                <React.Fragment>
                   {lastFiveYears.reverse().map((year) => {
                      return (
@@ -254,7 +264,7 @@ const IncomeStatementReportPage = (props) => {
                   })}
                </React.Fragment>
             </div>
-            <div style={{display: 'flex'}}>
+            <div style={{ display: 'flex', marginBottom: '.4rem' }}>
                <React.Fragment>
                   {lastSixMonths.map((month) => {
                      return (
@@ -263,7 +273,7 @@ const IncomeStatementReportPage = (props) => {
                            color="blue"
                            basic={
                               activeMonth != null ? activeMonth.format('MMMM') !==
-                              month.format('MMMM') : true 
+                                 month.format('MMMM') : true
                            }
                            onClick={() => {
                               if (activeMonth != null) {
@@ -284,12 +294,15 @@ const IncomeStatementReportPage = (props) => {
                   })}
                </React.Fragment>
             </div>
-
+         </div>
+         <div className="content-container" style={{ marginBottom: '1rem', maxWidth }}>
+            {/* render an array of buttons that represents the last six months of the year */}
             <CTable
                title={'Ingresos'}
                titleClass={'IncomeHeaderTitle'}
                rows={incomesRows}
                totalRow={['total']}
+               totalForCurrencyColumns={true}
                columns={[
                   {
                      name: 'category',
@@ -297,7 +310,7 @@ const IncomeStatementReportPage = (props) => {
                      onClick: (row) => {
                         setIncomeFilters(addOrRemove(incomeFilters, row.key));
                      },
-                     width: 6,
+                     width: categoryWidth,
                   },
                   ...monthColumns,
                   {
@@ -310,13 +323,13 @@ const IncomeStatementReportPage = (props) => {
                         setModalExpenses(row.data);
                      },
                   },
-                  {
-                     name: 'increase_percentage',
-                     label: '%I/D',
-                     color: true,
-                     textAlign: 'right',
-                     width: 2,
-                  },
+                  // {
+                  //    name: 'increase_percentage',
+                  //    label: '%I/D',
+                  //    color: true,
+                  //    textAlign: 'right',
+                  //    width: 2,
+                  // },
                ]}
                filters={incomeFilters}
             />
@@ -326,6 +339,7 @@ const IncomeStatementReportPage = (props) => {
                titleClass={'ExpenseHeaderTitle'}
                rows={expensesRows}
                totalRow={['total']}
+               totalForCurrencyColumns={true}
                columns={[
                   {
                      name: 'category',
@@ -333,7 +347,7 @@ const IncomeStatementReportPage = (props) => {
                      onClick: (row) => {
                         setExpenseFilters(addOrRemove(expenseFilters, row.key));
                      },
-                     width: 6,
+                     width: categoryWidth,
                   },
                   ...monthColumns,
                   {
@@ -346,13 +360,13 @@ const IncomeStatementReportPage = (props) => {
                         setModalExpenses(row.data);
                      },
                   },
-                  {
-                     name: 'increase_percentage',
-                     label: '%I/D',
-                     color: true,
-                     textAlign: 'right',
-                     width: 2,
-                  },
+                  // {
+                  //    name: 'increase_percentage',
+                  //    label: '%I/D',
+                  //    color: true,
+                  //    textAlign: 'right',
+                  //    width: 2,
+                  // },
                ]}
                granTotal={netIncome}
                filters={expenseFilters}

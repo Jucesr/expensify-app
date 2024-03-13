@@ -8,12 +8,12 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 console.log(`Environment: ${process.env.NODE_ENV}`)
 switch (process.env.NODE_ENV) {
   case "test":
-    require('dotenv').config({path: '.env.test'});
-  break;
+    require('dotenv').config({ path: '.env.test' });
+    break;
 
   case "development":
-    require('dotenv').config({path: '.env.development'});
-  break;
+    require('dotenv').config({ path: '.env.development' });
+    break;
 
   default:
 
@@ -24,9 +24,9 @@ module.exports = (env) => {
   const CSSExtract = new ExtractTextPlugin('styles.css');
 
   return {
-    entry: ['babel-polyfill','./src/app.js'],
+    entry: ['babel-polyfill', './src/app.js'],
     output: {
-      path: path.join(__dirname, 'public', 'dist'),
+      path: path.join(__dirname, 'docs', 'assets'),
       filename: 'bundle.js'
     },
     module: {

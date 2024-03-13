@@ -1,8 +1,8 @@
-import React, {useReducer, useEffect, useMemo} from 'react';
-import {Button, Icon, Table, Modal} from 'semantic-ui-react';
+import React, { useReducer, useEffect, useMemo } from 'react';
+import { Button, Icon, Table, Modal } from 'semantic-ui-react';
 import sortBy from 'lodash.sortby';
 import numeral from 'numeral';
-import {formatValue} from '../utils/index';
+import { formatValue } from '../utils/index';
 
 import PropTypes from 'prop-types';
 
@@ -61,6 +61,7 @@ const CustomTable = ({
    columns = [],
    filters = [],
    onRowClick,
+   totalForCurrencyColumns = false
 }) => {
    const [state, dispatch] = useReducer(exampleReducer, {
       column: null,
@@ -69,10 +70,10 @@ const CustomTable = ({
    });
 
    useEffect(() => {
-      dispatch({type: 'INIT_ROWS', payload: rows});
+      dispatch({ type: 'INIT_ROWS', payload: rows });
    }, [rows]);
 
-   const {column, data, direction} = state;
+   const { column, data, direction } = state;
 
    const totals = useMemo(() => {
       // remove rows that don't match the filters
@@ -80,13 +81,23 @@ const CustomTable = ({
          return !filters.includes(row.key);
       });
 
-      const totalsKeys = totalRow.reduce((acc, key) => {
+      let _totalRow;
+
+      if (totalForCurrencyColumns) {
+         _totalRow = columns.filter(c => c.format == 'currency').map(c => c.name)
+
+      } else {
+         _totalRow = totalRow
+      }
+
+      const totalsKeys = _totalRow.reduce((acc, key) => {
          acc[key] = 0;
          return acc;
       }, {});
 
+
       return filteredRows.reduce((acum, row) => {
-         return totalRow.reduce((acc, key) => {
+         return _totalRow.reduce((acc, key) => {
             const value = row[key] ? row[key] : 0;
             acc[key] += value;
             return acc;
@@ -114,7 +125,7 @@ const CustomTable = ({
                      width={col.width}
                      sorted={column === col.name ? direction : null}
                      onClick={() =>
-                        dispatch({type: 'CHANGE_SORT', column: col.name})
+                        dispatch({ type: 'CHANGE_SORT', column: col.name })
                      }
                   >
                      {col.label}
@@ -140,9 +151,8 @@ const CustomTable = ({
                return (
                   <Table.Row
                      key={row.id}
-                     className={`IncomeStatementTableHeaderRow ${
-                        is_disabled ? 'disable' : ''
-                     }`}
+                     className={`IncomeStatementTableHeaderRow ${is_disabled ? 'disable' : ''
+                        }`}
                   >
                      {columns.map((col) => (
                         <Table.Cell
@@ -171,8 +181,8 @@ const CustomTable = ({
                               col.onClick
                                  ? () => col.onClick(row)
                                  : onRowClick
-                                 ? () => onRowClick(row)
-                                 : null
+                                    ? () => onRowClick(row)
+                                    : null
                            }
                         >
                            {col.format
@@ -201,11 +211,10 @@ const CustomTable = ({
             {/* render a table footer with the net income */}
             {granTotal && (
                <Table.Row className="NetIncomeRow">
-                  <Table.HeaderCell colSpan="1">Net Income</Table.HeaderCell>
+                  <Table.HeaderCell colSpan={columns.length - 1}>Net Income</Table.HeaderCell>
                   <Table.HeaderCell textAlign="right">
                      {formatNumber(granTotal)}
                   </Table.HeaderCell>
-                  <Table.HeaderCell textAlign="right"></Table.HeaderCell>
                </Table.Row>
             )}
          </Table.Footer>

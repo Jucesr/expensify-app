@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react'
-import { Button, Icon, Table, Modal } from 'semantic-ui-react'
+import { Checkbox, Icon, Table, Modal } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
 import ExpenseListFilters from './ExpenseListFilters';
@@ -7,6 +7,7 @@ import selectExpenses from '../selectors/expenses'
 import numeral from 'numeral';
 import GoogleChart from "react-google-charts";
 import times from "lodash/times";
+import categories from '../config/categories';
 
 import { setStartDate } from "../actions/filters";
 
@@ -14,6 +15,7 @@ const ExpenseTimeLinePage = (props) => {
    const { expenses, dictionary } = props;
    const { pageTimeLineExpense } = dictionary;
 
+   const [selectedCategories, setSelectedCategories] = useState(categories)
    const [selectedExpenses, setSelectedExpenses] = useState([])
    const [sortAmount, setSortAmount] = useState('none')
    const [sortDate, setSortDate] = useState('none')
@@ -22,17 +24,21 @@ const ExpenseTimeLinePage = (props) => {
       props.setStartDate(moment().subtract(12, 'months'))
    }, [])
 
+   const expensesFilteredByCategory = useMemo(() => {
+      return expenses.filter(expense => selectedCategories.includes(expense.category))
+   }, [expenses, selectedCategories])
+
    // Iterate all expenses and group them by month.
-   const expensesByMonth = useMemo(() => expenses.reduce((acum, expense) => {
+   const expensesByMonth = useMemo(() => expensesFilteredByCategory.reduce((acum, expense) => {
       const month = moment(expense.createdAt).startOf('month');
       const monthString = month.format('MMM YY').toUpperCase()
       return {
          ...acum,
          [monthString]: acum[monthString] ? acum[monthString].concat(expense) : [expense]
       }
-   }, {}), [expenses])
+   }, {}), [expensesFilteredByCategory])
 
-   const dataObj = expenses.reduce((acum, expense) => {
+   const dataObj = expensesFilteredByCategory.reduce((acum, expense) => {
       const month = moment(expense.createdAt).startOf('month');
       let total = 0;
       total = expense.amount / 100;
@@ -138,7 +144,7 @@ const ExpenseTimeLinePage = (props) => {
 
                      <Table.Body>
                         {selectedExpenses.sort((a, b) => {
-                           if(sortDate !== 'none'){
+                           if (sortDate !== 'none') {
                               const isUp = sortDate === 'up';
                               if (moment(a.createdAt).isAfter(b.createdAt)) {
                                  return isUp ? -1 : 1
@@ -146,7 +152,7 @@ const ExpenseTimeLinePage = (props) => {
                                  return isUp ? 1 : -1
                               }
                            }
-                          
+
 
                            return sortAmount === 'up' ? a.amount - b.amount : b.amount - a.amount
                         }).map(expense => <Table.Row key={expense.id}>
@@ -192,6 +198,27 @@ const ExpenseTimeLinePage = (props) => {
                chartEvents={chartEvents}
             // rootProps={{ 'data-testid': '1' }}
             />
+
+            <div style={{
+               display: 'flex',
+               flexDirection: 'column',
+            }}>
+               {categories.map(c => {
+                  return <Checkbox
+                     key={c}
+                     label={dictionary.categories[c]}
+                     checked={selectedCategories.includes(c)}
+                     onChange={(e, data) => {
+                        if (data.checked) {
+                           setSelectedCategories(selectedCategories.concat(c))
+                        } else {
+                           setSelectedCategories(selectedCategories.filter(sc => sc !== c))
+                        }
+
+                     }} />
+               })}
+
+            </div>
          </div>
 
       </div>
@@ -204,7 +231,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
    dictionary: state.lang.dictionary,
-   expenses: selectExpenses(state.expenses.present, state.filters)
+   expenses: selectExpenses(state.expenses.present, state.filters),
+   filters: state.filters
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTimeLinePage);

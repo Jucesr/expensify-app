@@ -1,5 +1,12 @@
 # Release notes.
 
+### V7.2.0
+Date: March 13th, 2024
+
+* [NEW] 
+   * Multiple month view in income statement
+   * Filter out categories in ExpenseTimeLinePage
+
 ### V7.1
 Date: December 6th, 2022
 
