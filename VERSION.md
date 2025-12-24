@@ -1,5 +1,11 @@
 # Release notes.
 
+### V7.3.0
+Date: December 23th, 2025
+
+* [NEW] 
+   * Ability to add multiple expenses / incomes
+
 ### V7.2.0
 Date: March 13th, 2024
 

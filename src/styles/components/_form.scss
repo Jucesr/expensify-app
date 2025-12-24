@@ -10,3 +10,193 @@
   margin: 0 0 $m-size 0;
   font-style: italic;
 }
+
+// Multi-mode toggle
+.multi-mode-toggle {
+  margin-bottom: $m-size;
+  
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: $s-size;
+      cursor: pointer;
+    }
+    
+    .toggle-text {
+      font-size: 1.4rem;
+      color: $dark-gray;
+    }
+  }
+}
+
+// Multi-expense container
+.multi-expense-container {
+  display: flex;
+  flex-direction: column;
+  gap: $s-size;
+  
+  // Header row
+  .expense-rows-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 100px 130px 1fr 40px;
+    gap: $s-size;
+    padding: $s-size 0;
+    border-bottom: 2px solid $grey;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: $dark-gray;
+    
+    @media (max-width: $desktop-breakpoint) {
+      display: none;
+    }
+  }
+}
+
+.expense-item-group {
+  display: grid;
+  grid-template-columns: 40px 1fr 100px 130px 1fr 40px;
+  gap: $s-size;
+  align-items: center;
+  padding: $s-size 0;
+  border-bottom: 1px solid rgba($grey, 0.3);
+  
+  &:last-of-type {
+    border-bottom: none;
+  }
+  
+  .text-input,
+  .textarea {
+    margin-bottom: 0;
+  }
+  
+  .textarea {
+    min-height: 38px;
+    height: 38px;
+    resize: vertical;
+  }
+  
+  .date-picker-container {
+    margin-bottom: 0;
+  }
+  
+  // Responsive: stack on mobile
+  @media (max-width: $desktop-breakpoint) {
+    grid-template-columns: 1fr;
+    background: rgba($off-white, 0.5);
+    border: 1px solid $grey;
+    border-radius: 4px;
+    padding: $m-size;
+    gap: $s-size;
+    
+    .expense-item-number {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+.expense-item-number {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: $dark-gray;
+  text-align: center;
+}
+
+.button--remove {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background: darken(#dc3545, 10%);
+  }
+  
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.button--add-item {
+  background: transparent;
+  border: 2px dashed $grey;
+  color: $dark-gray;
+  padding: $s-size $m-size;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+  margin-top: $s-size;
+  
+  &:hover {
+    border-color: $blue;
+    color: $blue;
+    background: rgba($blue, 0.05);
+  }
+}
+
+.date-picker-container {
+  display: flex;
+  align-items: center;
+  gap: $s-size;
+  position: relative;
+  
+  .text-input {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  
+  .button--calendar {
+    padding: $s-size $m-size;
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  
+  .date-picker-calendar-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    
+    .SingleDatePicker {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    
+    .SingleDatePickerInput {
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      border: none;
+    }
+    
+    .DateInput {
+      display: none;
+    }
+    
+    .SingleDatePicker_picker {
+      top: 40px !important;
+      right: 0 !important;
+      left: auto !important;
+    }
+  }
+}
