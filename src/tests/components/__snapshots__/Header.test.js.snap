@@ -2,7 +2,7 @@
 
 exports[`should render Header 1`] = `
 <header
-  className="header"
+  className="header_wrapper"
 >
   <div
     className="content-container"
@@ -10,15 +10,26 @@ exports[`should render Header 1`] = `
     <div
       className="header__content"
     >
-      <Link
-        className="header__title"
-        replace={false}
-        to="/dashboard"
+      <div
+        className="header__brand"
       >
-        <h1>
-          Expensify
-        </h1>
-      </Link>
+        <Link
+          className="header__title"
+          replace={false}
+          to="/dashboard"
+        >
+          <h1>
+            Expensify
+          </h1>
+        </Link>
+        <Link
+          className="header__nav-link"
+          replace={false}
+          to="/costco"
+        >
+          Costco
+        </Link>
+      </div>
       <div
         className="header__user"
       >
@@ -32,9 +43,20 @@ exports[`should render Header 1`] = `
             EN
           </button>
         </div>
-        <div>
+        <div
+          style={
+            Object {
+              "maxHeight": "50px",
+            }
+          }
+        >
           <img
             src="http?sz=50"
+            style={
+              Object {
+                "height": "50px",
+              }
+            }
           />
         </div>
         <span

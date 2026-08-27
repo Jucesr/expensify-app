@@ -43,6 +43,9 @@ const formatColumnValue = (format, value) => {
       case 'currency':
          formattedValue = formatNumber(value);
          break;
+      case 'pesos':
+         formattedValue = numeral(value).format('$0,0.00');
+         break;
 
       default:
          formattedValue = formatValue(format, value);

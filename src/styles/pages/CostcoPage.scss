@@ -1,0 +1,55 @@
+.costco-tabs {
+  button {
+    margin-right: $s-size;
+  }
+}
+
+.costco-file-input {
+  display: none;
+}
+
+.costco-import-message {
+  margin: $m-size 0 0;
+  color: darken($blue, 15%);
+}
+
+.costco-import-message--error {
+  color: #c0392b;
+}
+
+.costco-loader {
+  padding: $l-size 0;
+}
+
+.costco-list-item {
+  cursor: pointer;
+}
+
+.costco-sku {
+  color: $grey;
+  font-weight: 300;
+  font-size: $fm-size;
+}
+
+.costco-purchase-row {
+  padding-left: $l-size;
+  border: 1px solid darken($off-white, 7%);
+  border-top: none;
+}
+
+.costco-top-grid {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: $desktop-breakpoint) {
+    flex-direction: row;
+
+    > * {
+      flex: 1;
+
+      &:first-child {
+        margin-right: $m-size;
+      }
+    }
+  }
+}

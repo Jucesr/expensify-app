@@ -8,6 +8,7 @@ import authReducer from '../reducers/auth';
 import langReducer from '../reducers/lang';
 import categoryReducer from '../reducers/categories';
 import cardsReducer from '../reducers/cards';
+import costcoTicketsReducer from '../reducers/costcoTickets';
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -25,6 +26,7 @@ export default () => {
       lang: langReducer,
       categories: categoryReducer,
       cards: cardsReducer,
+      costcoTickets: costcoTicketsReducer,
     }),
     composeEnhancers(applyMiddleware(thunk))
   );

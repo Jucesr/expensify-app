@@ -1,5 +1,11 @@
 # Release notes.
 
+### V7.4.0
+Date: Agosto 27th, 2026
+
+* [NEW] 
+   * Ability to get insighs from costo tickets
+
 ### V7.3.0
 Date: December 23th, 2025
 

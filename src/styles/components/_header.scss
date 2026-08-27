@@ -10,6 +10,22 @@
   }
 }
 
+.header__brand{
+  display: flex;
+  align-items: center;
+}
+
+.header__nav-link{
+  color: white;
+  text-decoration: none;
+  font-size: $fl-size;
+  font-weight: 300;
+  margin-left: $l-size;
+  &:hover{
+    color: $blue;
+  }
+}
+
 .header__content{
   display: flex;
   justify-content: space-between;

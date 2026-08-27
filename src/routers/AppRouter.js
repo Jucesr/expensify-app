@@ -15,6 +15,7 @@ import IncomeStatementReportPage from '../components/IncomeStatementReportPage/i
 import CategoriesPage from '../components/CategoriesPage';
 import CardsPage from '../routes/CardsPage';
 import AddCardPage from '../routes/CardsPage/AddCardPage';
+import CostcoPage from '../routes/CostcoPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -37,6 +38,7 @@ const AppRouter = () => (
         <PrivateRoute path="/categories" component={CategoriesPage} />
         <PrivateRoute path="/cards" component={CardsPage} />
         <PrivateRoute path="/add_card" component={AddCardPage} />
+        <PrivateRoute path="/costco" component={CostcoPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

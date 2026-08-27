@@ -8,7 +8,10 @@ export const Header = ({startLogout, setLanguage,  photoURL, displayName, dictio
   <header className="header_wrapper">
     <div className="content-container">
       <div className="header__content">
-        <Link className="header__title" to="/dashboard" ><h1>Expensify</h1></Link>
+        <div className="header__brand">
+          <Link className="header__title" to="/dashboard" ><h1>Expensify</h1></Link>
+          <Link className="header__nav-link" to="/costco">{dictionary.pageCostco.nav}</Link>
+        </div>
         <div className="header__user">
           <div className="header__language">
             <button className="button button-lang" onClick={() => {
